@@ -1,0 +1,25 @@
+// components
+@import 'variables/index';
+@import 'utils';
+
+// common styles
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-family-default;
+  font-size: $font-size-default;
+  line-height: $line-height-default;
+  font-weight: $font-weight-normal;
+  color: $color-text-dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga" on;
+}

@@ -1,6 +1,8 @@
 // components
-@import 'variables/index';
+@import "mixins";
 @import 'utils';
+@import "transitions";
+@import 'variables/index';
 
 // common styles
 *, *::before, *::after {
@@ -16,10 +18,30 @@ body {
   font-family: $font-family-default;
   font-size: $font-size-default;
   line-height: $line-height-default;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-regular;
   color: $color-text-dark;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -moz-font-feature-settings: "liga" on;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(60, 66, 77, 0.1);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $color-primary
+  }
 }
+
+h1, h2, h3, h4, h5, h6, p, span, a, button {
+  color: $color-text-dark;
+  font-family: Roboto;
+}
+
+@include font-face ('Roboto', '../fonts/Roboto-Thin', $weight: 100, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Light', $weight: 200, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Regular', $weight: 300, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Medium', $weight: 500, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Bold', $weight: 700, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Black', $weight: 900, $style: normal)

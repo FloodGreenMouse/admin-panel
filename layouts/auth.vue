@@ -1,9 +1,8 @@
 <template lang="pug">
 #app
-  div
-    transition(name="fade")
-      vLoader(v-if="showLoader")
-    nuxt
+  transition(name="fade")
+    vLoader(v-if="showLoader")
+  nuxt
 </template>
 
 <script>
@@ -25,3 +24,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

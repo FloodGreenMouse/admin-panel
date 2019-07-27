@@ -26,3 +26,12 @@ $xs: 575px;
     @content;
   }
 }
+
+@mixin font-face ($font-family, $file-path, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+    src: url('#{$file-path}.ttf') format('truetype');
+  }
+}

@@ -1,17 +1,12 @@
 <template lang="pug">
   .page.index
-    logo
-    div index page
+    div Index page!
 </template>
 
 <script>
-import logo from '@/components/logo'
 
 export default {
-  name: 'index-page',
-  components: {
-    logo
-  }
+  name: 'index-page'
 }
 </script>
 

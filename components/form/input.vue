@@ -1,6 +1,6 @@
 <template lang="pug">
 .input-component
-  input(:type="type" v-model="input")
+  input(:type="type" v-model="input" @change="getValue(input)")
   label.placeholder(:class="{'placeholder-active': input.length}") {{ placeholder }}
   .border
 </template>
@@ -21,6 +21,11 @@ export default {
   data () {
     return {
       input: ''
+    }
+  },
+  methods: {
+    getValue (input) {
+      this.$emit('input', input)
     }
   }
 }

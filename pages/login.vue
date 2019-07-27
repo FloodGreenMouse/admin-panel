@@ -5,22 +5,45 @@
       .form-head.flex.center
         span.title Вход в админ панель
       .form-body
-        vInput(placeholder="Логин")
-        vInput(placeholder="Пароль" type="password")
+        vInput(placeholder="Логин" v-model="name")
+        vInput(placeholder="Пароль" type="password" v-model="password")
       .form-footer.flex.j-end
-        vButton
+        vButton(@click="login")
+        vButton(text="Notify" @click="test")
+  vNotification
 </template>
 
 <script>
 import vInput from '~/components/form/input'
 import vButton from '~/components/form/button'
+import vNotification from '~/components/notification'
 
 export default {
   name: 'login-page',
   layout: 'auth',
   components: {
     vInput,
-    vButton
+    vButton,
+    vNotification
+  },
+  data () {
+    return {
+      name: '',
+      password: ''
+    }
+  },
+  methods: {
+    login () {
+      if (this.name.indexOf('123') !== -1 && this.password.indexOf('000') !== -1) {
+        window.localStorage.setItem('token', 'test')
+        this.$router.push('/')
+      } else {
+        console.warn('error')
+      }
+    },
+    test () {
+      this.$store.dispatch('addNotification')
+    }
   }
 }
 </script>

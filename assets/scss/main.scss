@@ -4,6 +4,13 @@
 @import "transitions";
 @import 'variables/index';
 
+@include font-face ('Roboto', '../fonts/Roboto-Thin', $weight: 100, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Light', $weight: 200, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Regular', $weight: 300, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Medium', $weight: 500, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Bold', $weight: 700, $style: normal)
+@include font-face ('Roboto', '../fonts/Roboto-Black', $weight: 900, $style: normal)
+
 // common styles
 *, *::before, *::after {
   box-sizing: border-box;
@@ -25,6 +32,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -moz-font-feature-settings: "liga" on;
   overflow-y: scroll;
+}
+
+body, .menu-container {
   &::-webkit-scrollbar {
     width: 8px;
     background-color: rgba(60, 66, 77, 0.1);
@@ -39,9 +49,9 @@ h1, h2, h3, h4, h5, h6, p, span, a, button {
   font-family: Roboto;
 }
 
-@include font-face ('Roboto', '../fonts/Roboto-Thin', $weight: 100, $style: normal)
-@include font-face ('Roboto', '../fonts/Roboto-Light', $weight: 200, $style: normal)
-@include font-face ('Roboto', '../fonts/Roboto-Regular', $weight: 300, $style: normal)
-@include font-face ('Roboto', '../fonts/Roboto-Medium', $weight: 500, $style: normal)
-@include font-face ('Roboto', '../fonts/Roboto-Bold', $weight: 700, $style: normal)
-@include font-face ('Roboto', '../fonts/Roboto-Black', $weight: 900, $style: normal)
+
+.page {
+  width: calc(100% - 300px);
+  padding: 20px 10px;
+  float: right;
+}

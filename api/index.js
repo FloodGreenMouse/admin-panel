@@ -35,7 +35,7 @@ export class API {
           reject(res.data.error)
         }
       }).catch((err) => {
-        reject(err.message)
+        reject(err.notification)
       })
     })
   }

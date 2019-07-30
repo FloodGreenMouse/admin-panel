@@ -22,6 +22,7 @@ export default {
 <style lang="scss" scoped>
   .button-component button {
     padding: 10px 20px;
+    margin: 5px 10px;
     border: 0;
     border-radius: 5px;
     background-color: $color-white;

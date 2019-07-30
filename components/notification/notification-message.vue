@@ -1,20 +1,21 @@
 <template lang="pug">
-.notification-message-component
+.notification-message-component(:class="notification.type")
   .header
-    span.title {{ message }}
+    span.title {{ notification.title }}
   .body
-    span Неправильно введен логин или пароль
+    span {{ notification.message }}
 </template>
 
 <script>
-// TODO: Добавить кастом тайтл\сообщение из стора + тип сообщения
+// TODO: Добавить анимацию скрытия сообщения
 export default {
   name: 'notification-message',
   props: {
-    message: {
-      type: String,
-      default: ''
-    }
+    notification: {
+      type: Object,
+      default: () => {}
+    },
+    index: Number
   },
   data () {
     return {
@@ -23,33 +24,29 @@ export default {
       hide: false
     }
   },
-  methods: {
-    deleteMessage () {
-      this.$store.dispatch('deleteNotification')
-      clearTimeout(this.hideTimer)
-      clearTimeout(this.timer)
-    }
-  },
   mounted () {
-    this.hideTimer = setTimeout(() => {
-      this.$el.classList.add('hide')
-    }, 4500)
-    this.timer = setTimeout(() => {
-      this.deleteMessage()
-    }, 5000)
+    this.$el.onmousemove = e => {
+      this.$el.style.transform = `translate(${e.offsetX / 80}px, ${e.offsetY / 80}px)`
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
   .notification-message-component {
-    background-color: $color-error;
     width: 400px;
     height: 150px;
     border-radius: 5px;
     padding: 15px 15px;
-    margin-bottom: 10px;
-    animation: reveal 0.2s ease 1;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    box-shadow: 0 0 10px rgba($color-text-dark, 0.5);
+    animation: reveal 0.4s ease 1;
+    cursor: default;
+    transition: $trs2;
+    &:hover {
+      box-shadow: 5px 2px 10px rgba($color-text-dark, 0.5);
+    }
     & * {
       color: $color-white;
     }
@@ -59,7 +56,7 @@ export default {
   }
   @keyframes hide {
     0% {
-      opacity: 1;
+      opacity: 0.8;
       transform: translateY(0);
     }
     100% {
@@ -70,11 +67,11 @@ export default {
   @keyframes reveal {
     0% {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(50px) scale(0);
     }
     100% {
-      opacity: 1;
-      transform: translateY(0);
+      opacity: 0.8;
+      transform: translateY(0) scale(1);
     }
   }
   .body {
@@ -83,5 +80,14 @@ export default {
   .title {
     font-weight: $font-weight-bold;
     font-size: 20px;
+  }
+  .info {
+    background-color: $color-info;
+  }
+  .warning {
+    background-color: $color-danger;
+  }
+  .error {
+    background-color: $color-error;
   }
 </style>

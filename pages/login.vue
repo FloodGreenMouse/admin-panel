@@ -5,11 +5,21 @@
       .form-head.flex.center
         span.title Вход в админ панель
       .form-body
-        vInput(placeholder="Логин" v-model="name")
-        vInput(placeholder="Пароль" type="password" v-model="password")
+        vInput(
+          placeholder="Логин"
+          v-model="name"
+          :invalid="invalidName"
+          @input="invalidName = false"
+          required)
+        vInput(
+          placeholder="Пароль"
+          type="password"
+          v-model="password"
+          :invalid="invalidPassword"
+          @input="invalidPassword = false"
+          required)
       .form-footer.flex.j-end
-        vButton(@click="login")
-        vButton(text="Notify" @click="test")
+        vButton(@click="login" text="Вход")
   vNotification
 </template>
 
@@ -29,20 +39,26 @@ export default {
   data () {
     return {
       name: '',
-      password: ''
+      password: '',
+      invalidName: false,
+      invalidPassword: false
     }
   },
   methods: {
     login () {
-      if (this.name.indexOf('123') !== -1 && this.password.indexOf('000') !== -1) {
-        window.localStorage.setItem('token', 'test')
-        this.$router.push('/')
-      } else {
-        console.warn('error')
+      this.invalidName = !this.name.length
+      this.invalidPassword = !this.password.length
+      if (!this.invalidName && !this.invalidPassword) {
+        if (this.name.indexOf('123') !== -1 && this.password.indexOf('000') !== -1) {
+          window.localStorage.setItem('token', 'test')
+          this.$router.push('/')
+        } else {
+          this.$store.dispatch('addNotification', {
+            title: 'Ошибка!',
+            message: 'Неправильный логин или пароль',
+            type: 'error' })
+        }
       }
-    },
-    test () {
-      this.$store.dispatch('addNotification')
     }
   }
 }

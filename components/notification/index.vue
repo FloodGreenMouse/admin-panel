@@ -3,7 +3,8 @@
   notificationMessage(
     v-for="(notification, i) in notifications"
     :key="i"
-    :message="notification")
+    :notification="notification"
+    :index="i")
 </template>
 
 <script>
@@ -30,6 +31,6 @@ export default {
     left: 15px;
     bottom: 0;
     background-color: transparent;
-    transition: all ease 0.5s;
+    transition: all ease 0.2s;
   }
 </style>

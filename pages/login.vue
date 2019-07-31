@@ -19,7 +19,7 @@
           @input="invalidPassword = false"
           required)
       .form-footer.flex.j-end
-        vButton(@click="login" text="Вход")
+        vButton(@click="login" text="Вход" :loading="loading")
   vNotification
 </template>
 
@@ -41,7 +41,8 @@ export default {
       name: '',
       password: '',
       invalidName: false,
-      invalidPassword: false
+      invalidPassword: false,
+      buttonLoading: false
     }
   },
   methods: {

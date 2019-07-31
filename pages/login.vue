@@ -2,24 +2,29 @@
 .login-page
   .container.flex.center
     .form
-      .form-head.flex.center
-        span.title Вход в админ панель
-      .form-body
-        vInput(
-          placeholder="Логин"
-          v-model="name"
-          :invalid="invalidName"
-          @input="invalidName = false"
-          required)
-        vInput(
-          placeholder="Пароль"
-          type="password"
-          v-model="password"
-          :invalid="invalidPassword"
-          @input="invalidPassword = false"
-          required)
-      .form-footer.flex.j-end
-        vButton(@click="login" text="Вход" :loading="loading")
+      form(action="" method="post" @submit.prevent autocomplete="on")
+        .form-head.flex.center
+          span.title Вход в админ панель
+        .form-body
+          vInput(
+            placeholder="E-mail"
+            v-model="email"
+            :invalid="invalidEmail"
+            @input="invalidEmail = false"
+            required)
+          vInput(
+            placeholder="Пароль"
+            type="password"
+            v-model="password"
+            :invalid="invalidPassword"
+            @input="invalidPassword = false"
+            required)
+          .form-footer.flex.j-end
+            vButton(
+              @click="login"
+              text="Вход"
+              :loading="buttonLoading"
+              role="submit")
   vNotification
 </template>
 
@@ -27,6 +32,7 @@
 import vInput from '~/components/form/input'
 import vButton from '~/components/form/button'
 import vNotification from '~/components/notification'
+import firebase from '~/plugins/firebase'
 
 export default {
   name: 'login-page',
@@ -38,27 +44,42 @@ export default {
   },
   data () {
     return {
-      name: '',
+      email: '',
       password: '',
-      invalidName: false,
+      invalidEmail: false,
       invalidPassword: false,
-      buttonLoading: false
+      buttonLoading: false,
+      fireLogin: null
     }
   },
   methods: {
     login () {
-      this.invalidName = !this.name.length
+      this.buttonLoading = true
+      this.invalidEmail = !this.email.length
       this.invalidPassword = !this.password.length
-      if (!this.invalidName && !this.invalidPassword) {
-        if (this.name.indexOf('123') !== -1 && this.password.indexOf('000') !== -1) {
-          window.localStorage.setItem('token', 'test')
-          this.$router.push('/')
-        } else {
-          this.$store.dispatch('addNotification', {
-            title: 'Ошибка!',
-            message: 'Неправильный логин или пароль',
-            type: 'error' })
-        }
+      if (!this.invalidEmail && !this.invalidPassword) {
+        firebase.firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+          .then(res => {
+            window.localStorage.setItem('token', res.user.uid)
+            this.$store.dispatch('addUserUid', res.user.uid)
+            this.$store.dispatch('addNotification', {
+              title: 'Успешно',
+              message: 'Вход в админ-панель',
+              type: 'info' })
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 2000)
+          })
+          .catch(err => {
+            console.log('error', err)
+            this.buttonLoading = false
+            this.$store.dispatch('addNotification', {
+              title: 'Ошибка!',
+              message: 'Неправильный логин или пароль',
+              type: 'error' })
+          })
+      } else {
+        this.buttonLoading = false
       }
     }
   }

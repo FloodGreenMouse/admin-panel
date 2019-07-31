@@ -65,7 +65,7 @@ export default {
     font-size: 16px;
     &:focus ~.placeholder {
       color: $color-primary;
-      transform: translate(-10px, -23px) scale(0.75);
+      transform: translate(-10px, -25px) scale(0.75);
     }
     &:focus ~.border {
       width: 100%;
@@ -86,7 +86,7 @@ export default {
   }
   .placeholder-active {
     color: $color-primary;
-    transform: translate(-10px, -23px) scale(0.75);
+    transform: translate(-10px, -25px) scale(0.75);
   }
   .border {
     position: absolute;

@@ -1,6 +1,10 @@
 <template lang="pug">
 .button-component
-  button(@click="$emit('click')" :class="[classList, {'loading' : loading }]" :disabled="loading")
+  button(
+    @click="$emit('click')"
+    :class="[classList, {'loading' : loading }]"
+    :disabled="loading"
+    :type="role")
     span.text(:class="{'hide-text': loading}") {{ text }}
     .button-loader(v-if="loading")
 </template>
@@ -20,6 +24,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    role: {
+      type: String,
+      default: 'button'
     }
   },
   computed: {

@@ -61,7 +61,7 @@ export default {
         firebase.firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           .then(res => {
             window.localStorage.setItem('token', res.user.uid)
-            this.$store.dispatch('addUserUid', res.user.uid)
+            this.$store.dispatch('addUserToken', res.user.uid)
             this.$store.dispatch('addNotification', {
               title: 'Успешно',
               message: 'Вход в админ-панель',

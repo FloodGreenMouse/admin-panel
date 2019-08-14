@@ -7,12 +7,21 @@
 </template>
 
 <script>
+import firebase from '~/plugins/firebase'
+
 export default {
   name: 'header-component',
   methods: {
     logout () {
-      window.localStorage.removeItem('token')
-      this.$router.push('/login')
+      firebase.firebase.auth().signOut()
+        .then(() => {
+          window.localStorage.removeItem('token')
+          this.$store.dispatch('deleteUserToken')
+          this.$router.push('/login')
+        })
+        .catch(err => {
+          console.warn('error', err)
+        })
     }
   }
 }

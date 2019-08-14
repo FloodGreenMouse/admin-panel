@@ -1,12 +1,17 @@
 export const state = () => ({
   notifications: [],
-  uid: ''
+  token: null
 })
 
 export const actions = {
-  addUserUid ({ commit }, uid) {
-    commit('ADD_USER_UID', uid)
+  addUserToken ({ commit }, token) {
+    commit('ADD_USER_UID', token)
   },
+
+  deleteUserToken ({ commit }) {
+    commit('DELETE_USER_UID')
+  },
+
   addNotification ({ commit, dispatch }, notification) {
     if (!notification.hasOwnProperty('type')) {
       notification.type = 'info'
@@ -17,6 +22,7 @@ export const actions = {
     }, notification.delay)
     commit('UPDATE_NOTIFICATION', notification)
   },
+
   deleteNotification ({ commit }, notification) {
     clearTimeout(notification.timeout)
     commit('DELETE_NOTIFICATION')
@@ -27,11 +33,17 @@ export const mutations = {
   UPDATE_NOTIFICATION (state, notification) {
     state.notifications.push(notification)
   },
+
   DELETE_NOTIFICATION (state) {
     state.notifications.splice(-1, 1)
   },
-  ADD_USER_UID (state, uid) {
-    state.uid = uid
+
+  ADD_USER_UID (state, token) {
+    state.token = token
+  },
+
+  DELETE_USER_UID (state) {
+    state.token = null
   }
 }
 

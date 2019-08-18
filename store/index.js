@@ -1,3 +1,9 @@
+import api from './api'
+
+export const modules = {
+  api
+}
+
 export const state = () => ({
   notifications: [],
   token: null

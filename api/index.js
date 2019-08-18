@@ -1,77 +1,46 @@
-import axios from 'axios'
-// import Cookie from 'vue-cookie'
+import firebase from '~/plugins/firebase'
 
-export class API {
-  constructor () {
-    this.token = null
-  }
+const API = {
 
   /**
-   * General API wrapper
-   * @param method {string}
-   * @param url {string}
-   * @param data {object}
+   * Get categories
+   * @method GET
+   * @param params <object>
    */
-  do (method = 'GET', url = '', data = {}) {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method,
-        url: `${process.env.API_URL}:${process.env.API_PORT}${url}`,
-        headers: {
-          // jwt: this.token
-        },
-        data
-      }
-      method === 'GET' ? options.params = data : options.data = data
-
-      axios(options).then((res) => {
-        if (res.data.status === 200) {
-          resolve(res.data)
-        } else {
-          // if (res.data.error === 'ERRORS.TOKEN') {
-          //   Cookie.delete('token')
-          //   window.location.replace('/login')
-          // }
-          reject(res.data.error)
-        }
-      }).catch((err) => {
-        reject(err.notification)
-      })
-    })
-  }
-
-  setToken (token) {
-    this.token = token
-  }
-
-  removeToken () {
-    this.token = null
-  }
+  getArticles () {
+    return firebase.firebase.database().ref('/articles').once('value')
+  },
 
   /**
-   * Sign In
-   * @method POST
-   * @param data {object}
+   * Get categories
+   * @method GET
+   * @param id <string>
    */
-  signIn (data) {
-    return this.do('POST', 'user/signin', data)
-  }
+  getArticle (id) {
+    return firebase.firebase.database().ref(`/articles/${id}`).once('value')
+  },
 
   /**
-   * Sign Out
-   * @method POST
-   * @param none
+   * Get categories
+   * @method GET
+   * @param data <object>
    */
-  signOut () {
-    return this.do('POST', 'user/signout')
-  }
+  addArticle (data) {
+    const postKey = firebase.firebase.database().ref().child('/articles').push().key
+    const article = {}
+    data.id = Date.now()
+    article['/article' + postKey] = data
+    return firebase.firebase.database().ref().child('/articles').update(article)
+  },
 
   /**
-   * User Info
-   * @method POST
-   * @param none
+   * Get categories
+   * @method GET
+   * @param id <string>
    */
-  userInfo () {
-    return this.do('POST', 'user/info')
+  deleteArticle (id) {
+    return firebase.firebase.database().ref().child(`/articles/${id}`).remove()
   }
 }
+
+export default API

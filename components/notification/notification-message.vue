@@ -81,7 +81,7 @@ export default {
     font-size: 20px;
   }
   .info {
-    background-color: $color-info;
+    background-color: $color-primary;
   }
   .warning {
     background-color: $color-danger;

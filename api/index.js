@@ -5,7 +5,6 @@ const API = {
   /**
    * Get categories
    * @method GET
-   * @param params <object>
    */
   getArticles () {
     return firebase.firebase.database().ref('/articles').once('value')
@@ -25,10 +24,29 @@ const API = {
    * @method GET
    * @param data <object>
    */
+  updateArticle (data) {
+    const article = {}
+    article['/article' + data.alias] = data
+    return firebase.firebase.database().ref().child('/articles').update(article,
+      function (error) {
+        if (error) {
+          return 'error'
+        } else {
+          return 'success'
+        }
+      })
+  },
+
+  /**
+   * Get categories
+   * @method GET
+   * @param data <object>
+   */
   addArticle (data) {
     const postKey = firebase.firebase.database().ref().child('/articles').push().key
     const article = {}
     data.id = Date.now()
+    data.alias = postKey
     article['/article' + postKey] = data
     return firebase.firebase.database().ref().child('/articles').update(article)
   },
@@ -36,10 +54,10 @@ const API = {
   /**
    * Get categories
    * @method GET
-   * @param id <string>
+   * @param alias <string>
    */
-  deleteArticle (id) {
-    return firebase.firebase.database().ref().child(`/articles/${id}`).remove()
+  deleteArticle (alias) {
+    return firebase.firebase.database().ref().child(`/articles/article${alias}`).remove()
   }
 }
 

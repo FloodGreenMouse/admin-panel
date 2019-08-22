@@ -2,11 +2,16 @@
   .page.articles
     h1.page-title Статьи
     .articles-listing.flex.wrap
-      vArticle(v-for="article in articles" :key="article.id" :title="article.title")
+      vArticle(
+        v-for="article in articles"
+        :key="article.id"
+        :title="article.title"
+        :link="`/articles/${article.alias}`")
+    .add-article.flex.j-end
+      vButton(text="+" type="add" title="Добавить статью" link="/articles/new-article")
 </template>
 
 <script>
-// import firebase from '~/plugins/firebase'
 import vArticle from '~/components/article'
 import vButton from '~/components/form/button'
 
@@ -23,12 +28,12 @@ export default {
   },
   asyncData ({ store }) {
     return store.dispatch('api/getArticles').then(res => {
-      console.log(res.val())
       return {
         articles: res.val()
       }
     }).catch(err => {
       console.warn('error', err)
+      return {}
     })
   }
 }
@@ -37,5 +42,10 @@ export default {
 <style lang="scss" scoped>
   .articles-listing {
     padding: 20px 0;
+  }
+  .add-article {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
   }
 </style>

@@ -29,11 +29,13 @@ export default {
 
 <style lang="scss" scoped>
   .header-container {
+    position: fixed;
     width: 100%;
     height: 48px;
     background-color: $color-primary;
     padding: 5px 25px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 2;
     * {
       color: $color-white;
     }

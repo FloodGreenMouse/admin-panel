@@ -11,11 +11,14 @@ export const actions = {
   getArticle ({ dispatch }, id) {
     return api.getArticle(id)
   },
+  updateArticle ({ dispatch }, data) {
+    return api.updateArticle(data)
+  },
   addArticle ({ dispatch }, data) {
     return api.addArticle(data)
   },
-  deleteArticle ({ dispatch }, id) {
-    return api.deleteArticle(id)
+  deleteArticle ({ dispatch }, alias) {
+    return api.deleteArticle(alias)
   }
 }
 

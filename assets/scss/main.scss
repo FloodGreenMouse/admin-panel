@@ -3,6 +3,7 @@
 @import 'utils';
 @import "transitions";
 @import 'variables/index';
+@import 'editor';
 
 @include font-face ('Roboto', '../fonts/Roboto-Thin', $weight: 100, $style: normal)
 @include font-face ('Roboto', '../fonts/Roboto-Light', $weight: 200, $style: normal)
@@ -52,7 +53,8 @@ h1, h2, h3, h4, h5, h6, p, span, a, button {
 
 .page {
   width: calc(100% - 300px);
-  padding: 20px 25px;
+  height: 100%;
+  padding: 100px 25px 25px 25px;
   float: right;
 }
 

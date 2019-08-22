@@ -1,0 +1,25 @@
+.ck-content {
+  min-height: 200px;
+  height: 100%;
+}
+
+.ck-button {
+  cursor: pointer !important;
+  transition: $trs3 !important;
+}
+
+.ck-dropdown__panel {
+  transform: none;
+  top: 110%;
+  z-index: 0;
+  .ck-list {
+    border: 1px solid rgba($color-text-dark, 0.5) !important;
+  }
+}
+
+.ck-editor {
+  z-index: 0;
+  * {
+    font-family: $font-family-default !important;
+  }
+}

@@ -1,7 +1,7 @@
 // primary
 $color-primary: #1867c0;
 $color-info: #90CAF9;
-$color-error: #ff5252;
+$color-error: #B00020;
 $color-danger: #fb8c00;
 
 // text
@@ -12,3 +12,9 @@ $color-white: #ffffff;
 $color-light: #e0e0e0;
 $color-disabled: #a8a7a7;
 $background-light: #BBDEFB;
+
+
+//box-shadows
+
+$shadow-button-hovered: 2px 2px 8px -1px rgba(0,0,0,0.68);
+$shadow-button-active: 3px 3px 8px -1px rgba(0,0,0,0.78);

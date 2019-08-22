@@ -49,6 +49,8 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv'
   ],
+
+  devModules: ['@nuxtjs/eslint-module'],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

@@ -28,12 +28,11 @@
 }
 
 .page-enter-active, .page-leave-active {
-  transition: opacity .15s ease, transform .2s ease;
+  transition: opacity .15s ease;
 }
 
 .page-enter {
   opacity: 0;
-  transform: translate(5%, 0);
 }
 
 .page-leave-active {

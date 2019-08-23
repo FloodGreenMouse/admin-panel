@@ -6,10 +6,14 @@ export const modules = {
 
 export const state = () => ({
   notifications: [],
-  token: null
+  token: null,
+  showMenu: false
 })
 
 export const actions = {
+  showMenu ({ commit }, value) {
+    commit('SHOW_MENU', value)
+  },
   addUserToken ({ commit }, token) {
     commit('ADD_USER_UID', token)
   },
@@ -36,6 +40,9 @@ export const actions = {
 }
 
 export const mutations = {
+  SHOW_MENU (state, value) {
+    state.showMenu = value
+  },
   UPDATE_NOTIFICATION (state, notification) {
     state.notifications.push(notification)
   },

@@ -48,4 +48,12 @@ export default {
       box-shadow: 0 0 10px rgba($color-text-dark, 0.5);
     }
   }
+  @include md {
+    .modal-content {
+      min-width: auto !important;
+      max-width: 95%;
+      margin: 0 20px;
+      width: 100%;
+    }
+  }
 </style>

@@ -35,3 +35,14 @@ $xs: 575px;
     src: url('#{$file-path}.ttf') format('truetype');
   }
 }
+
+@mixin svg ($color) {
+  svg {
+    .fill {
+      fill: $color;
+    }
+    .stroke {
+      stroke: $color;
+    }
+  }
+}

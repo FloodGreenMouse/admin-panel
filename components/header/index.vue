@@ -1,17 +1,37 @@
 <template lang="pug">
 .header-component
   .header-container.flex.a-center.j-between
-    span Администратор
+    .logo.flex.a-center
+      button(@click="toggleMenu")
+        menuIcon.icon
+      span Админ-панель
     .menu
       span.logout(@click="logout") Выход
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import firebase from '~/plugins/firebase'
+import menuIcon from '~/components/icons/menu'
 
 export default {
   name: 'header-component',
+  components: {
+    menuIcon
+  },
+  computed: {
+    ...mapState({
+      showMenu: state => state.showMenu
+    })
+  },
   methods: {
+    toggleMenu () {
+      if (!this.showMenu) {
+        this.$store.dispatch('showMenu', true)
+      } else {
+        this.$store.dispatch('showMenu', false)
+      }
+    },
     logout () {
       firebase.firebase.auth().signOut()
         .then(() => {
@@ -27,6 +47,12 @@ export default {
 }
 </script>
 
+<style lang="scss">
+  .logo {
+    @include svg($color-white)
+  }
+</style>
+
 <style lang="scss" scoped>
   .header-container {
     position: fixed;
@@ -40,10 +66,33 @@ export default {
       color: $color-white;
     }
   }
+  .logo {
+    cursor: default;
+    user-select: none;
+    button {
+      background-color: transparent;
+      border: 0;
+    }
+    .icon {
+      display: none;
+    }
+  }
   .logout {
     cursor: pointer;
+    user-select: none;
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  @include md {
+    .logo {
+      .icon {
+        display: block;
+      }
+      span {
+        margin-left: 20px;
+      }
     }
   }
 </style>

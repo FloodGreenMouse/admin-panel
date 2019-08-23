@@ -25,7 +25,7 @@ export default {
   styleResources: {
     scss: [
       '@/assets/scss/variables/_index.scss',
-      '@/assets/scss/_mixins.scss'
+      '@/assets/scss/mixins.scss'
     ]
   },
   /*
@@ -45,11 +45,11 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
     '@nuxtjs/dotenv'
   ],
 
-  devModules: ['@nuxtjs/eslint-module'],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

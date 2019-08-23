@@ -21,7 +21,7 @@
       template(v-slot:header)
         h2 Отменить редактирование?
       template(v-slot:footer)
-        vButton(text="Да" type="error" :link="`/articles/${this.$router.currentRoute.params.edit}`")
+        vButton(text="Да" type="error" :link="`/articles/${$router.currentRoute.params.edit}`")
         vButton(text="Нет" @click="showModal = false")
 </template>
 

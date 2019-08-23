@@ -1,6 +1,8 @@
 <template lang="pug">
   .page.index
-    div Index page!
+    h1 Админ панель
+    .add-article.flex.j-end
+      vButton(text="+" link="/articles/new-article" type="add")
 </template>
 
 <script>
@@ -17,5 +19,10 @@ export default {
 <style lang="scss" scoped>
   .index {
     //
+  }
+  .add-article {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
   }
 </style>

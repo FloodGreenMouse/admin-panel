@@ -40,7 +40,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba($color-text-dark, 0.2);
-    z-index: 1;
+    z-index: 2;
     display: none;
   }
   .menu-container {
@@ -54,7 +54,7 @@ export default {
     overflow-x: hidden;
     background-color: $color-white;
     transition: $trs3;
-    z-index: 2;
+    z-index: 3;
   }
 
   @include md {
@@ -62,9 +62,10 @@ export default {
       display: block;
     }
     .menu-container {
+      width: 250px;
       box-shadow: 0 0 10px rgba($color-text-dark, 0.5);
       transform: translateX(-100%);
-      z-index: 1;
+      z-index: 3;
     }
     .show-menu {
       transform: translateX(0);

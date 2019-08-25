@@ -89,4 +89,11 @@ export default {
   .error {
     background-color: $color-error;
   }
+
+  @include md {
+    .notification-message-component {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
 </style>

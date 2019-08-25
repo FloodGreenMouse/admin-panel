@@ -33,4 +33,11 @@ export default {
     background-color: transparent;
     transition: all ease 0.2s;
   }
+  @include md {
+    .notification-component {
+      width: 100%;
+      left: 0;
+      padding: 0 5px;
+    }
+  }
 </style>

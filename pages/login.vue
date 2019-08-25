@@ -121,4 +121,10 @@ export default {
     margin-top: 10px;
     padding: 15px 10px;
   }
+
+  @include md {
+    .form {
+      margin: 0 20px;
+    }
+  }
 </style>

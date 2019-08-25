@@ -10,7 +10,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "deploy": "nuxt build && firebase deploy"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^12.3.1",

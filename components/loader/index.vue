@@ -1,6 +1,6 @@
 <template lang="pug">
 .loader-component.flex.center
-  .loader
+  .loader.flex.j-center.a-center
     div
     div
     div
@@ -23,7 +23,6 @@ export default {
     z-index: 100;
   }
   .loader {
-    position: fixed;
     width: 100px;
     height: 100px;
     div {

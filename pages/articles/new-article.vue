@@ -5,7 +5,10 @@
       .input-field
         vInput(
           v-model="inputTitle"
-          placeholder="Заголовок статьи")
+          :invalid="!validTitle"
+          placeholder="Заголовок статьи"
+          @input="validTitle = true"
+          required)
       vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
@@ -41,6 +44,7 @@ export default {
   data () {
     return {
       inputTitle: '',
+      validTitle: true,
       editorData: '',
       showLoading: false,
       showModal: false
@@ -53,19 +57,24 @@ export default {
         title: this.inputTitle,
         content: this.editorData
       }
-      this.$store.dispatch('api/addArticle', this.article).then(() => {
+      if (this.article.title.length) {
+        this.$store.dispatch('api/addArticle', this.article).then(() => {
+          this.showLoading = false
+          this.$store.dispatch('addNotification', {
+            type: 'info',
+            title: 'Успешно',
+            message: 'Новая статья создана' })
+          setTimeout(() => {
+            this.$router.push(`/articles/${this.article.alias}`)
+          }, 500)
+        }).catch(err => {
+          this.showLoading = false
+          console.log('Error', err)
+        })
+      } else {
         this.showLoading = false
-        this.$store.dispatch('addNotification', {
-          type: 'info',
-          title: 'Успешно',
-          message: 'Новая статья создана' })
-        setTimeout(() => {
-          this.$router.push(`/articles/${this.article.alias}`)
-        }, 500)
-      }).catch(err => {
-        this.showLoading = false
-        console.log('Error', err)
-      })
+        this.validTitle = false
+      }
     }
   }
 }

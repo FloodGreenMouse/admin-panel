@@ -54,9 +54,10 @@ export default {
     document.querySelectorAll('oembed[url]').forEach(element => {
       const videoContainer = document.createElement('div')
       const iframe = document.createElement('iframe')
-      const url = element.getAttribute('url').replace('watch?v=', '/embed/')
+      let url = element.getAttribute('url').replace('youtu.be', 'youtube.com/embed/')
+      url = url.replace('watch?v=', '/embed/')
       iframe.setAttribute('width', '100%')
-      iframe.setAttribute('height', '480')
+      iframe.setAttribute('height', '100%')
       iframe.setAttribute('src', url)
       iframe.setAttribute('frameborder', '0')
       iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope')
@@ -73,6 +74,8 @@ export default {
   .video-content {
     margin-top: 50px;
     margin-bottom: 50px;
+    max-height: 480px;
+    height: 100%;
   }
 </style>
 

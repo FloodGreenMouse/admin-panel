@@ -6,6 +6,7 @@
         vInput(
           v-model="inputTitle"
           :incomingData="article.title"
+          :maxLength="50"
           placeholder="Заголовок статьи")
       vEditor(v-model="editorData" :incomingData="incomingData")
     .buttons.flex.j-end

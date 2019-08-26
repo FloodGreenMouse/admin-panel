@@ -3,13 +3,14 @@
   input(
     :type="type"
     v-model="input"
-    @change="getValue(input)"
+    @input="getValue"
     :required="required")
   label.placeholder(:class="{'placeholder-active': input.length}") {{ placeholder }}
   .border
   transition(name="tooltip")
     .tooltip(v-if="required && invalid")
       span.tooltip-text Обязательное поле
+  span.max-length(v-if="hasMaxLength" :class="{'max-length--exceeded': maxLengthExceeded }") {{ maxLength - input.length }}
 </template>
 
 <script>
@@ -23,6 +24,10 @@ export default {
     type: {
       type: String,
       default: 'text'
+    },
+    maxLength: {
+      type: Number,
+      default: null
     },
     required: {
       type: Boolean
@@ -40,9 +45,25 @@ export default {
       input: this.incomingData
     }
   },
+  computed: {
+    hasMaxLength () {
+      return this.maxLength && this.input.length >= this.maxLength / 2
+    },
+    maxLengthExceeded () {
+      return this.maxLength && this.input.length === this.maxLength
+    }
+  },
   methods: {
-    getValue (input) {
-      this.$emit('input', input)
+    getValue () {
+      if (!this.maxLength) {
+        this.$emit('input', this.input)
+      }
+      if (this.maxLength && this.input.length > this.maxLength) {
+        this.input = this.input.slice(0, -1)
+        this.$emit('input', this.input)
+      } else {
+        this.$emit('input', this.input)
+      }
     }
   }
 }
@@ -53,6 +74,7 @@ export default {
     position: relative;
     margin-top: 25px;
     padding-bottom: 5px;
+    padding-right: 20px;
     border-bottom: 2px solid $color-light;
     z-index: 1;
     transition: $trs3;
@@ -125,6 +147,15 @@ export default {
     100% {
       transform: translateX(0);
     }
+  }
+  .max-length {
+    position: absolute;
+    right: 0;
+    bottom: 6px;
+    color: $color-text-dark;
+  }
+  .max-length--exceeded {
+    color: $color-error
   }
   .tooltip {
     position: absolute;

@@ -32,6 +32,7 @@ export default {
     bottom: 0;
     background-color: transparent;
     transition: all ease 0.2s;
+    z-index: 22;
   }
   @include md {
     .notification-component {

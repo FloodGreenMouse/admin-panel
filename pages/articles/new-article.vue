@@ -8,6 +8,7 @@
           :invalid="!validTitle"
           placeholder="Заголовок статьи"
           @input="validTitle = true"
+          :maxLength="50"
           required)
       vEditor(v-model="editorData")
     .buttons.flex.j-end

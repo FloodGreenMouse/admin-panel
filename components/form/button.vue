@@ -1,5 +1,9 @@
 <template lang="pug">
 .button-component
+  nuxt-link.link(
+    v-if="link.length"
+    :to="link"
+    :title="title")
   button(
     @click="$emit('click')"
     :class="[classList, {'loading' : loading }]"
@@ -8,10 +12,6 @@
     :title="title")
     span.text(:class="{'hide-text': loading}") {{ text }}
     .button-loader(v-if="loading")
-  nuxt-link.link(
-    v-if="link.length"
-    :to="link"
-    :title="title")
 </template>
 
 <script>
@@ -66,6 +66,12 @@ export default {
 <style lang="scss" scoped>
   .button-component {
     position: relative;
+    a:hover ~button {
+      box-shadow: $shadow-button-hovered;
+    }
+    a:active ~button {
+      box-shadow: $shadow-button-active;
+    }
     button {
       padding: 10px 20px;
       margin: 5px 10px 5px 0;
@@ -146,6 +152,7 @@ export default {
     vertical-align: middle;
     font-size: 25px;
     &:hover {
+      box-shadow: $shadow-button-hovered;
       background-color: lighten($color-primary, 5%);
     }
     &:active {

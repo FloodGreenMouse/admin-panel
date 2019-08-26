@@ -32,7 +32,10 @@ export default {
       editorData: this.incomingData,
       config: {
         language: 'ru',
-        height: 1000
+        height: 1000,
+        MediaEmbedProvider: {
+          removeProviders: ['youtube']
+        }
       }
     }
   },

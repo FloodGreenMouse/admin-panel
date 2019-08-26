@@ -49,9 +49,32 @@ export default {
         this.$router.push('/articles')
       })
     }
+  },
+  mounted () {
+    document.querySelectorAll('oembed[url]').forEach(element => {
+      const videoContainer = document.createElement('div')
+      const iframe = document.createElement('iframe')
+      const url = element.getAttribute('url').replace('watch?v=', '/embed/')
+      iframe.setAttribute('width', '100%')
+      iframe.setAttribute('height', '480')
+      iframe.setAttribute('src', url)
+      iframe.setAttribute('frameborder', '0')
+      iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope')
+      videoContainer.appendChild(iframe)
+      videoContainer.className = 'video-content'
+
+      element.appendChild(videoContainer)
+    })
   }
 }
 </script>
+
+<style lang="scss">
+  .video-content {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+</style>
 
 <style lang="scss" scoped>
   .article-content {

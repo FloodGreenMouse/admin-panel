@@ -19,6 +19,9 @@ export const actions = {
   },
   deleteArticle ({ dispatch }, alias) {
     return api.deleteArticle(alias)
+  },
+  checkUser ({ dispatch }, refreshToken) {
+    return api.checkUser(refreshToken)
   }
 }
 

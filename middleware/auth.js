@@ -1,27 +1,27 @@
 import firebase from '~/plugins/firebase'
+import cookie from 'vue-cookie'
 
 export default function ({ store, route, redirect }) {
-  const token = window.localStorage.getItem('token')
+  const cookieToken = cookie.get('token')
 
-  if (token !== null) {
-    if (!route.path.includes('/login')) {
-      const storeToken = store.state.token
-      if (storeToken === null) {
+  if (!cookieToken) {
+    const storeToken = store.state.token
+
+    if (!storeToken) {
+      if (!route.path.includes('/login')) {
         firebase.firebase.auth().onAuthStateChanged(user => {
-          if (!user) {
-            window.localStorage.removeItem('token')
-            return redirect('/login')
-          } else {
-            window.localStorage.setItem('token', user.refreshToken)
+          if (user) {
+            cookie.set('token', user.refreshToken, 1)
             store.dispatch('addUserToken', user.refreshToken)
+          } else {
+            return redirect('/login')
           }
         })
       }
     } else {
-      return redirect('/')
+      cookie.set('token', storeToken, 1)
     }
-  }
-  if (token === null && !route.path.includes('/login')) {
-    return redirect('/login')
+  } if (cookieToken && route.path.includes('/login')) {
+    redirect('/')
   }
 }

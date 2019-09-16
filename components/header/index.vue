@@ -13,6 +13,7 @@
 import { mapState } from 'vuex'
 import firebase from '~/plugins/firebase'
 import menuIcon from '~/components/icons/menu'
+import cookie from 'vue-cookie'
 
 export default {
   name: 'header-component',
@@ -35,12 +36,11 @@ export default {
     logout () {
       firebase.firebase.auth().signOut()
         .then(() => {
-          window.localStorage.removeItem('token')
+          cookie.delete('token')
           this.$store.dispatch('deleteUserToken')
-          this.$router.push('/login')
         })
-        .catch(err => {
-          console.warn('error', err)
+        .catch(() => {
+          console.warn('error')
         })
     }
   }

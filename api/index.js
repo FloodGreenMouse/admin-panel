@@ -55,6 +55,21 @@ const API = {
    */
   deleteArticle (alias) {
     return firebase.firebase.database().ref().child(`/articles/article${alias}`).remove()
+  },
+
+  /**
+   * Get categories
+   * @method GET
+   * @param refreshToken <string>
+   */
+  checkUser (refreshToken) {
+    const user = firebase.firebase.auth().currentUser
+
+    if (user) {
+      return user.refreshToken === refreshToken
+    } else {
+      return null
+    }
   }
 }
 

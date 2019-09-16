@@ -8,7 +8,8 @@ export default function ({ store, route, redirect }) {
       const storeToken = store.state.token
       if (storeToken === null) {
         firebase.firebase.auth().onAuthStateChanged(user => {
-          if (user === null && user.refreshToken !== token) {
+          if (!user) {
+            window.localStorage.removeItem('token')
             return redirect('/login')
           } else {
             window.localStorage.setItem('token', user.refreshToken)

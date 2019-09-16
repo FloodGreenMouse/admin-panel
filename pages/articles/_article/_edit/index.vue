@@ -66,7 +66,8 @@ export default {
       this.showLoading = true
       this.article.title = this.inputTitle
       this.article.content = this.editorData
-      this.$store.dispatch('api/updateArticle', this.article).then(() => {
+      this.$store.dispatch('api/updateArticle', this.article).then(res => {
+        console.log(res)
         this.showLoading = false
         this.$store.dispatch('addNotification', {
           type: 'info',
@@ -77,6 +78,10 @@ export default {
         }, 500)
       }).catch(err => {
         this.showLoading = false
+        this.$store.dispatch('addNotification', {
+          type: 'error',
+          title: 'Ошибка',
+          message: 'Возникла какая-то ошибка' })
         console.log('Error', err)
       })
     }

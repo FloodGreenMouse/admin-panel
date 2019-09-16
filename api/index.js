@@ -27,14 +27,11 @@ const API = {
   updateArticle (data) {
     const article = {}
     article['/article' + data.alias] = data
-    return firebase.firebase.database().ref().child('/articles').update(article,
-      function (error) {
-        if (error) {
-          return 'error'
-        } else {
-          return 'success'
-        }
-      })
+    return firebase.firebase.database().ref().child('/articles').update(article).then(() => {
+      return true
+    }).catch(() => {
+      return false
+    })
   },
 
   /**

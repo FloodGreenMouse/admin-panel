@@ -9,6 +9,8 @@
     menuLink(link="/history") История монастыря
     menuLink(link="/visitors") Посетителям
     menuLink(link="/lavka") Церковная лавка
+    menuLink(link="/needs") Нужды обители
+    menuLink(link="/contacts") Контакты
 </template>
 
 <script>

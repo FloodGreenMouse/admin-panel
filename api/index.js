@@ -26,7 +26,11 @@ const API = {
    */
   updateArticle (data) {
     const article = {}
-    article[`/${data.category}` + data.alias] = data
+    if (!data.unique) {
+      article[`/${data.category}` + data.alias] = data
+    } else {
+      article[data.alias] = data
+    }
     return firebase.database().ref().child(`/${data.category}`).update(article).then(() => {
       return true
     }).catch(() => {
@@ -43,8 +47,12 @@ const API = {
     const postKey = firebase.database().ref().child(`/${data.category}`).push().key
     const article = {}
     data.id = Date.now()
-    data.alias = postKey
-    article[`/${data.category}` + postKey] = data
+    if (!data.alias) {
+      data.alias = postKey
+      article[`/${data.category}` + postKey] = data
+    } else {
+      article[data.alias] = data
+    }
     return firebase.database().ref().child(`/${data.category}`).update(article)
   },
 

@@ -1,52 +1,40 @@
 <template lang="pug">
   .editor-component
-    .editor(
-      :value="incomingData"
-      ref="editor")
+    ckeditor(v-model="localValue")
 </template>
 
 <script>
-import config from './editor-config.js'
+import ckeditor from './ckeditor'
 
 export default {
-  name: 'editor-component',
+  name: 'editor-componet',
+  components: {
+    ckeditor
+  },
   model: {
     prop: 'value',
     event: 'change'
   },
   props: {
-    incomingData: {
+    value: {
       type: String,
       default: ''
     }
   },
   data () {
     return {
-      editor: null,
-      editorData: this.incomingData
+      localValue: this.value
+    }
+  },
+  watch: {
+    localValue () {
+      this.$emit('change', this.localValue)
     }
   },
   methods: {
-    init () {
-      this.value = this.incomingData
-      window.ClassicEditor.defaultConfig = {
-        toolbar: config.toolbar
-      }
-      window.ClassicEditor
-        .create(this.$refs.editor)
-        .then(editor => {
-          editor.setData(this.value)
-          editor.model.document.on('change:data', () => {
-            this.$emit('change', editor.getData())
-          })
-        })
-        .catch(error => {
-          console.error(error)
-        })
+    getData (value) {
+      console.log(value)
     }
-  },
-  mounted () {
-    this.init()
   }
 }
 </script>

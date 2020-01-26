@@ -1,6 +1,8 @@
 <template lang="pug">
   .page.article
     h1.page-title {{ article.title }}
+    .main-image(v-if="article.image")
+      img(:src="article.image")
     .article-content(v-html="article.content")
     .buttons.flex.j-end
       vButton(text="Редактировать" @click="openEditor")

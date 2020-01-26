@@ -60,11 +60,37 @@ h1, h2, h3, h4, h5, h6, p, span, a, button {
   height: 100%;
   padding: 100px 25px 25px 25px;
   float: right;
-}
 
-.page-title {
-  line-height: 1;
-  color: rgba($color-text-dark, 0.8)
+  .page-title {
+    line-height: 1;
+    color: rgba($color-text-dark, 0.8)
+  }
+
+  .input-field {
+    margin-bottom: 30px;
+    max-width: 300px;
+  }
+
+  .file-input {
+    margin-bottom: 30px;
+  }
+
+  .editor {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    .input-field {
+      margin-bottom: 30px;
+      max-width: 300px;
+    }
+  }
+
+  .main-image {
+    max-width: 300px;
+    width: 100%;
+    img {
+      width: 100%;
+    }
+  }
 }
 
 #app {

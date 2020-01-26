@@ -8,7 +8,12 @@
           :incomingData="article.title"
           :maxLength="50"
           placeholder="Заголовок статьи")
-      vEditor(v-model="editorData" :incomingData="incomingData")
+      .file-input(v-if="!article.image")
+        fileInput(v-model="file")
+      .file-input.main-image(v-else)
+        img(:src="article.image" alt="Изображение")
+        vButton(@click="deleteImage" text="Удалить изображение")
+      vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
         text="Сохранить"
@@ -27,10 +32,11 @@
 </template>
 
 <script>
-import vButton from '~/components/form/button'
-import vEditor from '~/components/editor'
-import vModal from '~/components/modal'
-import vInput from '~/components/form/input'
+import vButton from '@/components/form/button'
+import vEditor from '@/components/editor'
+import vModal from '@/components/modal'
+import vInput from '@/components/form/input'
+import fileInput from '@/components/form/file-input'
 
 export default {
   name: 'edit-page',
@@ -38,13 +44,14 @@ export default {
     vButton,
     vEditor,
     vInput,
-    vModal
+    vModal,
+    fileInput
   },
   data () {
     return {
+      file: null,
       inputTitle: '',
       editorData: '',
-      incomingData: '',
       showLoading: false,
       showModal: false
     }
@@ -57,7 +64,7 @@ export default {
       return {
         article: res.val(),
         inputTitle: res.val().title,
-        incomingData: res.val().content
+        editorData: res.val().content
       }
     }).catch(err => {
       console.warn('Error', err)
@@ -69,8 +76,12 @@ export default {
       this.showLoading = true
       this.article.title = this.inputTitle
       this.article.content = this.editorData
+      if (!this.article.image) {
+        this.article.file = this.file
+      }
       this.article.unique = true
       this.$store.dispatch('api/updateArticle', this.article).then(res => {
+        console.log('res', res)
         if (res) {
           this.showLoading = false
           this.$store.dispatch('addNotification', {
@@ -89,21 +100,16 @@ export default {
           console.log('Error')
         }
       })
+    },
+    deleteImage () {
+      this.article.image = ''
     }
-  },
-  mounted () {
-    console.log(this.incomingData)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .editor {
-    margin-top: 50px;
-    margin-bottom: 20px;
-    .input-field {
-      margin-bottom: 30px;
-      max-width: 300px;
-    }
+  .page.edit {
+    //
   }
 </style>

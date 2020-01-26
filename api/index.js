@@ -31,11 +31,33 @@ const API = {
     } else {
       article[data.alias] = data
     }
-    return firebase.database().ref().child(`/${data.category}`).update(article).then(() => {
-      return true
-    }).catch(() => {
-      return false
-    })
+    if (data.file) {
+      const metadata = {
+        contentType: data.file.type
+      }
+      return firebase.storage().ref().child(`${data.category}`).put(data.file, metadata)
+        .then(snapshot => {
+          snapshot.ref.getDownloadURL().then(url => {
+            data.image = url
+            delete data.file
+            return firebase.database().ref().child(`/${data.category}`).update(article)
+              .then(() => {
+                return true
+              }).catch(() => {
+                return false
+              })
+          })
+          return true
+        }).catch(() => {
+          return false
+        })
+    } else {
+      return firebase.database().ref().child(`/${data.category}`).update(article).then(() => {
+        return true
+      }).catch(() => {
+        return false
+      })
+    }
   },
 
   /**

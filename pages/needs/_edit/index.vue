@@ -22,7 +22,7 @@
       template(v-slot:header)
         h2 Отменить редактирование?
       template(v-slot:footer)
-        vButton(text="Да" type="error" :link="`/${$router.currentRoute.params.edit}`")
+        vButton(text="Да" type="error" link="/needs")
         vButton(text="Нет" @click="showModal = false")
 </template>
 
@@ -90,6 +90,9 @@ export default {
         }
       })
     }
+  },
+  mounted () {
+    console.log(this.incomingData)
   }
 }
 </script>

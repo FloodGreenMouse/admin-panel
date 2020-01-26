@@ -1,51 +1,52 @@
 <template lang="pug">
   .editor-component
-    ckeditor(
-      :editor="editor"
-      :config="config"
-      v-model="editorData"
-      @input="getData")
+    .editor(
+      :value="incomingData"
+      ref="editor")
 </template>
 
 <script>
-import Vue from 'vue'
-import CKEditor from '@ckeditor/ckeditor5-vue'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import '@ckeditor/ckeditor5-build-classic/build/translations/ru'
-
-Vue.use(CKEditor)
+import config from './editor-config.js'
 
 export default {
   name: 'editor-component',
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   props: {
     incomingData: {
       type: String,
       default: ''
     }
   },
-  components: {
-    CKEditor
-  },
   data () {
     return {
-      editor: ClassicEditor,
-      editorData: this.incomingData,
-      config: {
-        language: 'ru',
-        height: 1000,
-        MediaEmbedProvider: {
-          removeProviders: ['youtube']
-        }
-      }
+      editor: null,
+      editorData: this.incomingData
     }
   },
   methods: {
-    getData () {
-      this.$emit('input', this.editorData)
+    init () {
+      this.value = this.incomingData
+      window.ClassicEditor.defaultConfig = {
+        toolbar: config.toolbar
+      }
+      window.ClassicEditor
+        .create(this.$refs.editor)
+        .then(editor => {
+          editor.setData(this.value)
+          editor.model.document.on('change:data', () => {
+            this.$emit('change', editor.getData())
+          })
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   },
   mounted () {
-    this.getData()
+    this.init()
   }
 }
 </script>

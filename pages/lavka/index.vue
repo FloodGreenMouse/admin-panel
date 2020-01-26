@@ -1,14 +1,14 @@
 <template lang="pug">
   .page.articles
-    h1.page-title Статьи
+    h1.page-title Категория: лавка монастыря
     .articles-listing.flex.wrap
       vArticle(
         v-for="article in articles"
         :key="article.id"
         :title="article.title"
-        :link="`/articles/${article.alias}`")
+        :link="`/lavka/${article.alias}`")
     .add-article.flex.j-end
-      vButton(text="+" type="add" title="Добавить статью" link="/articles/new-article")
+      vButton(text="+" type="add" title="Добавить товар" link="/lavka/new-article")
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
     }
   },
   asyncData ({ store }) {
-    return store.dispatch('api/getArticles').then(res => {
+    return store.dispatch('api/getArticles', 'lavka').then(res => {
       return {
         articles: res.val()
       }

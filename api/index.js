@@ -6,17 +6,17 @@ const API = {
    * Get categories
    * @method GET
    */
-  getArticles () {
-    return firebase.firebase.database().ref('/articles').once('value')
+  getArticles (category) {
+    return firebase.database().ref(`/${category}`).once('value')
   },
 
   /**
    * Get categories
    * @method GET
-   * @param id <string>
+   * @param data <object>
    */
-  getArticle (id) {
-    return firebase.firebase.database().ref(`/articles/${id}`).once('value')
+  getArticle (data) {
+    return firebase.database().ref(`/${data.category}/${data.category}${data.id}`).once('value')
   },
 
   /**
@@ -26,8 +26,8 @@ const API = {
    */
   updateArticle (data) {
     const article = {}
-    article['/article' + data.alias] = data
-    return firebase.firebase.database().ref().child('/articles').update(article).then(() => {
+    article[`/${data.category}` + data.alias] = data
+    return firebase.database().ref().child(`/${data.category}`).update(article).then(() => {
       return true
     }).catch(() => {
       return false
@@ -40,21 +40,21 @@ const API = {
    * @param data <object>
    */
   addArticle (data) {
-    const postKey = firebase.firebase.database().ref().child('/articles').push().key
+    const postKey = firebase.database().ref().child(`/${data.category}`).push().key
     const article = {}
     data.id = Date.now()
     data.alias = postKey
-    article['/article' + postKey] = data
-    return firebase.firebase.database().ref().child('/articles').update(article)
+    article[`/${data.category}` + postKey] = data
+    return firebase.database().ref().child(`/${data.category}`).update(article)
   },
 
   /**
    * Get categories
    * @method GET
-   * @param alias <string>
+   * @param data <object>
    */
-  deleteArticle (alias) {
-    return firebase.firebase.database().ref().child(`/articles/article${alias}`).remove()
+  deleteArticle (data) {
+    return firebase.database().ref().child(`/${data.category}/${data.category}${data.id}`).remove()
   },
 
   /**
@@ -63,7 +63,7 @@ const API = {
    * @param refreshToken <string>
    */
   checkUser (refreshToken) {
-    const user = firebase.firebase.auth().currentUser
+    const user = firebase.auth().currentUser
 
     if (user) {
       return user.refreshToken === refreshToken

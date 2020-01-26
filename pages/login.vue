@@ -58,7 +58,7 @@ export default {
       this.invalidEmail = !this.email.length
       this.invalidPassword = !this.password.length
       if (!this.invalidEmail && !this.invalidPassword) {
-        firebase.firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           .then(res => {
             window.localStorage.setItem('token', res.user.uid)
             this.$store.dispatch('addUserToken', res.user.uid)

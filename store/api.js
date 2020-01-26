@@ -5,11 +5,11 @@ export const state = () => ({
 })
 
 export const actions = {
-  getArticles ({ dispatch }) {
-    return api.getArticles()
+  getArticles ({ dispatch }, category) {
+    return api.getArticles(category)
   },
-  getArticle ({ dispatch }, id) {
-    return api.getArticle(id)
+  getArticle ({ dispatch }, data) {
+    return api.getArticle(data)
   },
   updateArticle ({ dispatch }, data) {
     return api.updateArticle(data)
@@ -17,8 +17,8 @@ export const actions = {
   addArticle ({ dispatch }, data) {
     return api.addArticle(data)
   },
-  deleteArticle ({ dispatch }, alias) {
-    return api.deleteArticle(alias)
+  deleteArticle ({ dispatch }, data) {
+    return api.deleteArticle(data)
   },
   checkUser ({ dispatch }, refreshToken) {
     return api.checkUser(refreshToken)

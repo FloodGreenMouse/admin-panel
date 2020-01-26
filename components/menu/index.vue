@@ -4,7 +4,11 @@
     .wrapper(v-if="showMenu" @click="closeMenu")
   .menu-container(:class="{'show-menu': showMenu}")
     menuLink(link="/") Главная
-    menuLink(link="/articles") Статьи
+    menuLink(link="/news") Новости
+    menuLink(link="/shrines") Святыни
+    menuLink(link="/history") История монастыря
+    menuLink(link="/visitors") Посетителям
+    menuLink(link="/lavka") Церковная лавка
 </template>
 
 <script>

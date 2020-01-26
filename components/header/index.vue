@@ -4,7 +4,7 @@
     .logo.flex.a-center
       button(@click="toggleMenu")
         menuIcon.icon
-      span Админ-панель
+      nuxt-link(to="/") Админ-панель
     .menu
       span.logout(@click="logout") Выход
 </template>
@@ -34,7 +34,7 @@ export default {
       }
     },
     logout () {
-      firebase.firebase.auth().signOut()
+      firebase.auth().signOut()
         .then(() => {
           cookie.delete('token')
           this.$store.dispatch('deleteUserToken')
@@ -54,44 +54,51 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  .header-container {
-    position: fixed;
-    width: 100%;
-    height: 48px;
-    background-color: $color-primary;
-    padding: 5px 25px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-    * {
-      color: $color-white;
+  .header-component {
+    a {
+      text-decoration: none;
     }
-  }
-  .logo {
-    cursor: default;
-    user-select: none;
-    button {
-      background-color: transparent;
-      border: 0;
+    .header-container {
+      position: fixed;
+      width: 100%;
+      height: 48px;
+      background-color: $color-primary;
+      padding: 5px 25px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      * {
+        color: $color-white;
+      }
     }
-    .icon {
-      display: none;
+    .logo {
+      cursor: default;
+      user-select: none;
+      button {
+        background-color: transparent;
+        border: 0;
+      }
+      .icon {
+        display: none;
+      }
     }
-  }
-  .logout {
-    cursor: pointer;
-    user-select: none;
-    &:hover {
-      text-decoration: underline;
+    .logout {
+      cursor: pointer;
+      user-select: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
   @include md {
-    .logo {
-      .icon {
-        display: block;
-      }
-      span {
-        margin-left: 20px;
+    .header-component {
+      .logo {
+        .icon {
+          display: block;
+        }
+        span {
+          margin-left: 20px;
+        }
       }
     }
   }

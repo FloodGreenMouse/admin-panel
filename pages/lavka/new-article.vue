@@ -1,14 +1,16 @@
 <template lang="pug">
   .page.edit
-    h1.page-title Редактирование статьи
+    h1.page-title Новый товар
     .editor
       .input-field
         vInput(
           v-model="inputTitle"
-          :incomingData="article.title"
+          :invalid="!validTitle"
+          placeholder="Название товара"
+          @input="validTitle = true"
           :maxLength="50"
-          placeholder="Заголовок статьи")
-      vEditor(v-model="editorData" :incomingData="incomingData")
+          required)
+      vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
         text="Сохранить"
@@ -22,7 +24,7 @@
       template(v-slot:header)
         h2 Отменить редактирование?
       template(v-slot:footer)
-        vButton(text="Да" type="error" :link="`/articles/${$router.currentRoute.params.edit}`")
+        vButton(text="Да" type="error" link="/lavka")
         vButton(text="Нет" @click="showModal = false")
 </template>
 
@@ -43,48 +45,38 @@ export default {
   data () {
     return {
       inputTitle: '',
+      validTitle: true,
       editorData: '',
-      incomingData: '',
       showLoading: false,
       showModal: false
     }
   },
-  asyncData ({ store, params }) {
-    return store.dispatch('api/getArticle', 'article' + params.edit).then(res => {
-      return {
-        article: res.val(),
-        inputTitle: res.val().title,
-        incomingData: res.val().content
-      }
-    }).catch(err => {
-      console.warn('Error', err)
-      return {}
-    })
-  },
   methods: {
     sendData () {
       this.showLoading = true
-      this.article.title = this.inputTitle
-      this.article.content = this.editorData
-      this.$store.dispatch('api/updateArticle', this.article).then(res => {
-        if (res) {
+      this.article = {
+        category: 'lavka',
+        title: this.inputTitle,
+        content: this.editorData
+      }
+      if (this.article.title.length) {
+        this.$store.dispatch('api/addArticle', this.article).then(() => {
           this.showLoading = false
           this.$store.dispatch('addNotification', {
             type: 'info',
             title: 'Успешно',
-            message: 'Статья обновлена' })
+            message: 'Новый товар создан' })
           setTimeout(() => {
-            this.$router.push(`/articles/${this.article.alias}`)
+            this.$router.push(`/lavka/${this.article.alias}`)
           }, 500)
-        } else {
+        }).catch(err => {
           this.showLoading = false
-          this.$store.dispatch('addNotification', {
-            type: 'error',
-            title: 'Ошибка',
-            message: 'Возникла какая-то ошибка' })
-          console.log('Error')
-        }
-      })
+          console.log('Error', err)
+        })
+      } else {
+        this.showLoading = false
+        this.validTitle = false
+      }
     }
   }
 }

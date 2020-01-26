@@ -43,6 +43,11 @@ export default {
   }
   a.nuxt-link-exact-active {
     border-bottom: 1px solid;
-    border-bottom-color: lighten($color-light, 5%);
+    border-top: 1px solid;
+    border-color: lighten($color-light, 5%);
+    background-color: rgba(0, 0, 0, 0.02);
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
   }
 </style>

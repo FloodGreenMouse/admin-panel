@@ -30,7 +30,10 @@ export default {
     }
   },
   asyncData ({ store, params }) {
-    return store.dispatch('api/getArticle', 'article' + params.article).then(res => {
+    return store.dispatch('api/getArticle', {
+      category: 'news',
+      id: params.article
+    }).then(res => {
       return {
         article: res.val()
       }
@@ -41,12 +44,15 @@ export default {
   },
   methods: {
     openEditor () {
-      this.$router.push(`/articles/article/${this.article.alias}`)
+      this.$router.push(`/news/article/${this.article.alias}`)
     },
     deleteArticle () {
-      this.$store.dispatch('api/deleteArticle', this.article.alias)
+      this.$store.dispatch('api/deleteArticle', {
+        category: 'news',
+        id: this.article.alias
+      })
       setTimeout(() => {
-        this.$router.push('/articles')
+        this.$router.push('/news')
       })
     }
   },

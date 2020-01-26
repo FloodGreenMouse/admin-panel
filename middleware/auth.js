@@ -9,7 +9,7 @@ export default function ({ store, route, redirect }) {
 
     if (!storeToken) {
       if (!route.path.includes('/login')) {
-        firebase.firebase.auth().onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
           if (user) {
             cookie.set('token', user.refreshToken, 1)
             store.dispatch('addUserToken', user.refreshToken)

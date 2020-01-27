@@ -2,14 +2,39 @@
   .page.edit
     h1.page-title Новый товар
     .editor
-      .input-field
-        vInput(
-          v-model="inputTitle"
-          :invalid="!validTitle"
-          placeholder="Название товара"
-          @input="validTitle = true"
-          :maxLength="50"
-          required)
+      h2.h2 Название товара
+      .flex
+        .col-4
+          .input-field
+            vInput(
+              v-model="inputTitle"
+              :invalid="!validTitle"
+              placeholder="Название"
+              @input="validTitle = true"
+              :maxLength="50"
+              required)
+      h2.h2 Стоимость товара
+      .flex.a-center(v-for="(item, i) in prices" :key="i")
+        .input-field.col-2
+          vInput(
+              v-model="item.price"
+              type="number"
+              :maxLength="10"
+              :placeholder="item.price")
+        .input-field.col-2
+          vInput.description(
+            v-model="item.description"
+            :maxLength="50"
+            placeholder="Описание")
+        a.delete-price(
+          v-if="i !== 0"
+          @click.prevent="deletePrice(i)"
+          href="") Удалить
+        a.add-price(
+          v-if="i === prices.length - 1"
+          @click.prevent="addPrice"
+          href="") Добавить
+      h2.h2 Описание
       vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
@@ -45,6 +70,10 @@ export default {
   data () {
     return {
       inputTitle: '',
+      prices: [{
+        price: 0,
+        description: ''
+      }],
       validTitle: true,
       editorData: '',
       showLoading: false,
@@ -52,12 +81,26 @@ export default {
     }
   },
   methods: {
+    addPrice () {
+      this.prices.push({
+        price: '0',
+        description: ''
+      })
+    },
+    deletePrice (i) {
+      this.prices.forEach((price, index) => {
+        if (index === i) {
+          this.prices.splice(i, 1)
+        }
+      })
+    },
     sendData () {
       this.showLoading = true
       this.article = {
         category: 'lavka',
         title: this.inputTitle,
-        content: this.editorData
+        content: this.editorData,
+        prices: this.prices
       }
       if (this.article.title.length) {
         this.$store.dispatch('api/addArticle', this.article).then(() => {
@@ -86,9 +129,21 @@ export default {
   .editor {
     margin-top: 50px;
     margin-bottom: 20px;
-    .input-field {
+    .input-field .description {
+      margin-left: 10px;
+    }
+    .cost {
+      display: inline-block;
       margin-bottom: 30px;
-      max-width: 300px;
+    }
+    .add-price, .delete-price {
+      margin-left: 10px;
+    }
+    .add-price {
+      color: $color-primary;
+    }
+    .delete-price {
+      color: $color-error;
     }
   }
 </style>

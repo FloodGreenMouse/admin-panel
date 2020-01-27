@@ -54,6 +54,12 @@ h1, h2, h3, h4, h5, h6, p, span, a, button {
   font-family: Roboto;
 }
 
+hr {
+  background-color: $color-primary;
+  height: 1px;
+  border: 0;
+}
+
 
 .page {
   width: calc(100% - 300px);
@@ -68,7 +74,6 @@ h1, h2, h3, h4, h5, h6, p, span, a, button {
 
   .input-field {
     margin-bottom: 30px;
-    max-width: 300px;
   }
 
   .file-input {
@@ -78,9 +83,9 @@ h1, h2, h3, h4, h5, h6, p, span, a, button {
   .editor {
     margin-top: 50px;
     margin-bottom: 20px;
-    .input-field {
+    .h2 {
       margin-bottom: 30px;
-      max-width: 300px;
+      color: rgba($color-text-dark, 0.8)
     }
   }
 

@@ -30,11 +30,6 @@ export default {
     localValue () {
       this.$emit('change', this.localValue)
     }
-  },
-  methods: {
-    getData (value) {
-      console.log(value)
-    }
   }
 }
 </script>

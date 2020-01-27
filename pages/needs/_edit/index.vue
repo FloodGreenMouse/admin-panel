@@ -81,7 +81,6 @@ export default {
       }
       this.article.unique = true
       this.$store.dispatch('api/updateArticle', this.article).then(res => {
-        console.log('res', res)
         if (res) {
           this.showLoading = false
           this.$store.dispatch('addNotification', {

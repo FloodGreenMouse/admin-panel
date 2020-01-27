@@ -1,9 +1,11 @@
 <template lang="pug">
 .input-component(:class="{'invalid-input': invalid}")
   input(
-    :type="type"
     v-model="input"
+    :type="type"
     @input="getValue"
+    @change="$emit('change', $event.target.value)"
+    min="0"
     :required="required")
   label.placeholder(:class="{'placeholder-active': input.length}") {{ placeholder }}
   .border
@@ -17,10 +19,7 @@
 export default {
   name: 'input-component',
   props: {
-    placeholder: {
-      type: String,
-      default: ''
-    },
+    placeholder: [Number, String],
     type: {
       type: String,
       default: 'text'
@@ -55,6 +54,16 @@ export default {
   },
   methods: {
     getValue () {
+      if (this.type.includes('number')) {
+        this.input = this.input.replace(/[^\d]/, '')
+        if (this.input.toString().length === 0) {
+          this.input = '0'
+        }
+        if (this.input.toString().length > 1 && this.input[0] === '0') {
+          this.input = this.input[1]
+        }
+        this.$emit('input', this.input)
+      }
       if (!this.maxLength) {
         this.$emit('input', this.input)
       }
@@ -72,7 +81,7 @@ export default {
 <style lang="scss" scoped>
   .input-component {
     position: relative;
-    margin-top: 25px;
+    margin-top: 10px;
     padding-bottom: 5px;
     padding-right: 20px;
     border-bottom: 2px solid $color-light;

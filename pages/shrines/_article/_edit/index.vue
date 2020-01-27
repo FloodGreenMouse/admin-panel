@@ -8,7 +8,7 @@
           :incomingData="article.title"
           :maxLength="50"
           placeholder="Заголовок статьи")
-      vEditor(v-model="editorData" :incomingData="incomingData")
+      vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
         text="Сохранить"
@@ -57,7 +57,7 @@ export default {
       return {
         article: res.val(),
         inputTitle: res.val().title,
-        incomingData: res.val().content
+        editorData: res.val().content
       }
     }).catch(err => {
       console.warn('Error', err)

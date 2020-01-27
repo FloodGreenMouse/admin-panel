@@ -1,6 +1,16 @@
 <template lang="pug">
-  .page.article
+  .page.product
     h1.page-title {{ article.title }}
+    .prices
+      h2.h2 Стоимость товара
+      .price(v-for="(item, i) in article.prices" :key="i")
+        span.price-title Стоимость:
+        =" "
+        span {{ item.price }} руб.
+        =" "
+        span.price-title Описание:
+        =" "
+        span {{ item.description }}
     .article-content(v-html="article.content")
     .buttons.flex.j-end
       vButton(text="Редактировать" @click="openEditor")
@@ -18,7 +28,7 @@ import vButton from '~/components/form/button'
 import vModal from '~/components/modal'
 
 export default {
-  name: 'article-page',
+  name: 'product-page',
   components: {
     vButton,
     vModal
@@ -86,6 +96,14 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+  .page.product {
+    .price {
+      margin-bottom: 10px;
+      .price-title {
+        font-weight: 900;
+      }
+    }
+  }
   .article-content {
     margin-bottom: 50px;
   }

@@ -2,13 +2,38 @@
   .page.edit
     h1.page-title Редактирование товара
     .editor
-      .input-field
+      h2.h2 Название товара
+      .input-field.col-4
         vInput(
           v-model="inputTitle"
           :incomingData="article.title"
           :maxLength="50"
           placeholder="Название товара")
-      vEditor(v-model="editorData" :incomingData="incomingData")
+      h2.h2 Стоимость товара
+      .flex.a-center(v-for="(item, i) in article.prices" :key="i")
+        .input-field.col-2
+          vInput(
+            v-model="item.price"
+            :incomingData="item.price"
+            type="number"
+            :maxLength="10"
+            :placeholder="item.price")
+        .input-field.col-2
+          vInput.description(
+            v-model="item.description"
+            :incomingData="item.description"
+            :maxLength="50"
+            placeholder="Описание")
+        a.delete-price(
+          v-if="i !== 0"
+          @click.prevent="deletePrice(i)"
+          href="") Удалить
+        a.add-price(
+          v-if="i === article.prices.length - 1"
+          @click.prevent="addPrice"
+          href="") Добавить
+      h2.h2 Описание
+      vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
         text="Сохранить"
@@ -57,7 +82,7 @@ export default {
       return {
         article: res.val(),
         inputTitle: res.val().title,
-        incomingData: res.val().content
+        editorData: res.val().content
       }
     }).catch(err => {
       console.warn('Error', err)
@@ -65,6 +90,19 @@ export default {
     })
   },
   methods: {
+    addPrice () {
+      this.article.prices.push({
+        price: '0',
+        description: ''
+      })
+    },
+    deletePrice (i) {
+      this.article.prices.forEach((price, index) => {
+        if (index === i) {
+          this.article.prices.splice(i, 1)
+        }
+      })
+    },
     sendData () {
       this.showLoading = true
       this.article.title = this.inputTitle
@@ -97,9 +135,21 @@ export default {
   .editor {
     margin-top: 50px;
     margin-bottom: 20px;
-    .input-field {
+    .input-field .description {
+      margin-left: 10px;
+    }
+    .cost {
+      display: inline-block;
       margin-bottom: 30px;
-      max-width: 300px;
+    }
+    .add-price, .delete-price {
+      margin-left: 10px;
+    }
+    .add-price {
+      color: $color-primary;
+    }
+    .delete-price {
+      color: $color-error;
     }
   }
 </style>

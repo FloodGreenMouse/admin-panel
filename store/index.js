@@ -23,9 +23,9 @@ export const actions = {
   },
 
   addNotification ({ commit, dispatch }, notification) {
-    // if (!notification.hasOwnProperty('type')) {
-    //   notification.type = 'info'
-    // }
+    if (!notification.type) {
+      notification.type = 'info'
+    }
     notification.delay = 5000
     notification.timeout = setTimeout(() => {
       dispatch('deleteNotification', notification)

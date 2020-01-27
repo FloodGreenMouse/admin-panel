@@ -38,6 +38,7 @@ export default {
         .then(() => {
           cookie.delete('token')
           this.$store.dispatch('deleteUserToken')
+          this.$router.push('/login')
         })
         .catch(() => {
           console.warn('error')

@@ -22,6 +22,9 @@ export const actions = {
   },
   checkUser ({ dispatch }, refreshToken) {
     return api.checkUser(refreshToken)
+  },
+  deleteImage ({ dispatch }, data) {
+    return api.deleteImage(data)
   }
 }
 

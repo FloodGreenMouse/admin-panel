@@ -1,35 +1,35 @@
 <template lang="pug">
-  .page.articles
+  .page.products
     h1.page-title Категория: лавка монастыря
-    .articles-listing.flex.wrap
+    .products-listing.flex.wrap
       vArticle(
-        v-for="article in articles"
-        :key="article.id"
-        :title="article.title"
-        :link="`/lavka/${article.alias}`")
-    .add-article.flex.j-end
-      vButton(text="+" type="add" title="Добавить товар" link="/lavka/new-article")
+        v-for="product in products"
+        :key="product.id"
+        :title="product.title"
+        :link="`/lavka/${product.alias}`")
+    .add-product.flex.j-end
+      vButton(text="+" type="add" title="Добавить товар" link="/lavka/new-product")
 </template>
 
 <script>
-import vArticle from '~/components/article'
-import vButton from '~/components/form/button'
+import vArticle from '@/components/article'
+import vButton from '@/components/form/button'
 
 export default {
-  name: 'articles-page',
+  name: 'products-page',
   components: {
     vArticle,
     vButton
   },
   data () {
     return {
-      articles: {}
+      products: {}
     }
   },
   asyncData ({ store }) {
     return store.dispatch('api/getArticles', 'lavka').then(res => {
       return {
-        articles: res.val()
+        products: res.val()
       }
     }).catch(err => {
       console.warn('error', err)
@@ -40,10 +40,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .articles-listing {
+  .products-listing {
     padding: 20px 0;
   }
-  .add-article {
+  .add-product {
     position: fixed;
     bottom: 20px;
     right: 20px;

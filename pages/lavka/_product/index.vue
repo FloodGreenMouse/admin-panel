@@ -1,17 +1,20 @@
 <template lang="pug">
   .page.product
-    h1.page-title {{ article.title }}
+    h1.page-title {{ product.title }}
+    .main-image(v-if="hasImage")
+      img(:src="product.image" alt="Товар")
     .prices
       h2.h2 Стоимость товара
-      .price(v-for="(item, i) in article.prices" :key="i")
+      .price(v-for="(item, i) in product.prices" :key="i")
+        span.price-title Наименование:
+        =" "
+        span {{ item.description || 'нет наименования' }}
+        =" "
         span.price-title Стоимость:
         =" "
         span {{ item.price }} руб.
-        =" "
-        span.price-title Описание:
-        =" "
-        span {{ item.description }}
-    .article-content(v-html="article.content")
+    h2.h2 Описание
+    .article-content(v-html="product.content")
     .buttons.flex.j-end
       vButton(text="Редактировать" @click="openEditor")
       vButton(text="Удалить" @click="showModal = true" type="error")
@@ -19,7 +22,7 @@
       template(v-slot:header)
         h2 Удалить товар?
       template(v-slot:footer)
-        vButton(text="Да" @click="deleteArticle" type="error")
+        vButton(text="Да" @click="deleteProduct" type="error")
         vButton(text="Отмена" @click="showModal = false" type="secondary")
 </template>
 
@@ -35,31 +38,36 @@ export default {
   },
   data () {
     return {
-      article: {},
+      product: {},
       showModal: false
     }
   },
   asyncData ({ store, params }) {
     return store.dispatch('api/getArticle', {
       category: 'lavka',
-      id: params.article
+      id: params.product
     }).then(res => {
       return {
-        article: res.val()
+        product: res.val()
       }
     }).catch(err => {
       console.warn('Error', err)
       return {}
     })
   },
+  computed: {
+    hasImage () {
+      return this.product.image.length
+    }
+  },
   methods: {
     openEditor () {
-      this.$router.push(`/lavka/article/${this.article.alias}`)
+      this.$router.push(`/lavka/product/${this.product.alias}`)
     },
-    deleteArticle () {
+    deleteProduct () {
       this.$store.dispatch('api/deleteArticle', {
-        category: 'shrines',
-        id: this.article.alias
+        category: 'lavka',
+        id: this.product.alias
       })
       setTimeout(() => {
         this.$router.push('/lavka')

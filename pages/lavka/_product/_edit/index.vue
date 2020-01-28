@@ -2,36 +2,44 @@
   .page.edit
     h1.page-title Редактирование товара
     .editor
-      h2.h2 Название товара
-      .input-field.col-4
-        vInput(
-          v-model="inputTitle"
-          :incomingData="article.title"
-          :maxLength="50"
-          placeholder="Название товара")
-      h2.h2 Стоимость товара
-      .flex.a-center(v-for="(item, i) in article.prices" :key="i")
-        .input-field.col-2
-          vInput(
-            v-model="item.price"
-            :incomingData="item.price"
-            type="number"
-            :maxLength="10"
-            :placeholder="item.price")
-        .input-field.col-2
-          vInput.description(
-            v-model="item.description"
-            :incomingData="item.description"
-            :maxLength="50"
-            placeholder="Описание")
-        a.delete-price(
-          v-if="i !== 0"
-          @click.prevent="deletePrice(i)"
-          href="") Удалить
-        a.add-price(
-          v-if="i === article.prices.length - 1"
-          @click.prevent="addPrice"
-          href="") Добавить
+      .flex
+        .col-6
+          h2.h2 Название товара
+          .input-field.col-4
+            vInput(
+              v-model="inputTitle"
+              :incomingData="product.title"
+              :maxLength="50"
+              placeholder="Название товара")
+          h2.h2 Стоимость товара
+          .flex.a-center(v-for="(item, i) in product.prices" :key="i")
+            .input-field.col-2
+              vInput(
+                v-model="item.price"
+                :incomingData="item.price"
+                type="number"
+                :maxLength="10"
+                :placeholder="item.price")
+            .input-field.col-4
+              vInput.description(
+                v-model="item.description"
+                :incomingData="item.description"
+                :maxLength="50"
+                placeholder="Описание")
+            a.delete-price(
+              v-if="i !== 0"
+              @click.prevent="deletePrice(i)"
+              href="") Удалить
+            a.add-price(
+              v-if="i === product.prices.length - 1"
+              @click.prevent="addPrice"
+              href="") Добавить
+        .col-6
+          .file-input(v-if="!hasImage")
+            fileInput(v-model="file")
+          .file-input.main-image(v-else)
+            img(:src="product.image" alt="Изображение")
+            vButton(@click="deleteImage" text="Удалить изображение")
       h2.h2 Описание
       vEditor(v-model="editorData")
     .buttons.flex.j-end
@@ -52,10 +60,11 @@
 </template>
 
 <script>
-import vButton from '~/components/form/button'
-import vEditor from '~/components/editor'
-import vModal from '~/components/modal'
-import vInput from '~/components/form/input'
+import vButton from '@/components/form/button'
+import vEditor from '@/components/editor'
+import vModal from '@/components/modal'
+import vInput from '@/components/form/input'
+import fileInput from '@/components/form/file-input'
 
 export default {
   name: 'edit-page',
@@ -63,10 +72,12 @@ export default {
     vButton,
     vEditor,
     vInput,
-    vModal
+    vModal,
+    fileInput
   },
   data () {
     return {
+      file: null,
       inputTitle: '',
       editorData: '',
       incomingData: '',
@@ -80,7 +91,7 @@ export default {
       id: params.edit
     }).then(res => {
       return {
-        article: res.val(),
+        product: res.val(),
         inputTitle: res.val().title,
         editorData: res.val().content
       }
@@ -89,25 +100,41 @@ export default {
       return {}
     })
   },
+  computed: {
+    hasImage () {
+      return this.product.image.length
+    }
+  },
   methods: {
     addPrice () {
-      this.article.prices.push({
+      this.product.prices.push({
         price: '0',
         description: ''
       })
     },
     deletePrice (i) {
-      this.article.prices.forEach((price, index) => {
+      this.product.prices.forEach((price, index) => {
         if (index === i) {
-          this.article.prices.splice(i, 1)
+          this.product.prices.splice(i, 1)
         }
       })
     },
+    deleteImage () {
+      this.product.image = ''
+    },
     sendData () {
       this.showLoading = true
-      this.article.title = this.inputTitle
-      this.article.content = this.editorData
-      this.$store.dispatch('api/updateArticle', this.article).then(res => {
+      this.product.title = this.inputTitle
+      this.product.content = this.editorData
+      if (!this.product.image && this.file !== null) {
+        this.product.file = this.file
+      } else if (!this.product.image) {
+        this.$store.dispatch('api/deleteImage', {
+          category: 'lavka',
+          alias: this.product.alias
+        })
+      }
+      this.$store.dispatch('api/updateArticle', this.product).then(res => {
         if (res) {
           this.showLoading = false
           this.$store.dispatch('addNotification', {
@@ -115,7 +142,7 @@ export default {
             title: 'Успешно',
             message: 'Продукт обновлен' })
           setTimeout(() => {
-            this.$router.push(`/lavka/${this.article.alias}`)
+            this.$router.push(`/lavka/${this.product.alias}`)
           }, 500)
         } else {
           this.showLoading = false

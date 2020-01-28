@@ -24,6 +24,51 @@ const API = {
    * @method GET
    * @param data <object>
    */
+  addArticle (data) {
+    const article = {}
+    const postKey = firebase.database().ref().child(`/${data.category}`).push().key
+    data.id = Date.now()
+    if (!data.alias) {
+      data.alias = postKey
+      article[`/${data.category}` + postKey] = data
+    } else {
+      article[data.alias] = data
+    }
+    if (data.file) {
+      const metadata = {
+        contentType: data.file.type
+      }
+      return firebase.storage().ref().child(`/${data.category}/${data.alias}`).put(data.file, metadata)
+        .then(snapshot => {
+          snapshot.ref.getDownloadURL().then(url => {
+            data.image = url
+            delete data.file
+            return firebase.database().ref().child(`/${data.category}`).update(article)
+              .then(() => {
+                return true
+              }).catch(() => {
+                return false
+              })
+          })
+          return true
+        }).catch(() => {
+          return false
+        })
+    } else {
+      return firebase.database().ref().child(`/${data.category}`).update(article)
+        .then(() => {
+          return true
+        }).catch(() => {
+          return false
+        })
+    }
+  },
+
+  /**
+   * Get categories
+   * @method GET
+   * @param data <object>
+   */
   updateArticle (data) {
     const article = {}
     if (!data.unique) {
@@ -35,7 +80,7 @@ const API = {
       const metadata = {
         contentType: data.file.type
       }
-      return firebase.storage().ref().child(`${data.category}`).put(data.file, metadata)
+      return firebase.storage().ref().child(`/${data.category}/${data.alias}`).put(data.file, metadata)
         .then(snapshot => {
           snapshot.ref.getDownloadURL().then(url => {
             data.image = url
@@ -61,30 +106,21 @@ const API = {
   },
 
   /**
-   * Get categories
-   * @method GET
-   * @param data <object>
-   */
-  addArticle (data) {
-    const postKey = firebase.database().ref().child(`/${data.category}`).push().key
-    const article = {}
-    data.id = Date.now()
-    if (!data.alias) {
-      data.alias = postKey
-      article[`/${data.category}` + postKey] = data
-    } else {
-      article[data.alias] = data
-    }
-    return firebase.database().ref().child(`/${data.category}`).update(article)
-  },
-
-  /**
-   * Get categories
+   * Delete article
    * @method GET
    * @param data <object>
    */
   deleteArticle (data) {
     return firebase.database().ref().child(`/${data.category}/${data.category}${data.id}`).remove()
+  },
+
+  /**
+   * Delete image
+   * @method GET
+   * @param data <object>
+   */
+  deleteImage (data) {
+    return firebase.storage().ref().child(`/${data.category}/${data.alias}`).delete()
   },
 
   /**

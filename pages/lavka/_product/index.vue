@@ -65,10 +65,7 @@ export default {
       this.$router.push(`/lavka/product/${this.product.alias}`)
     },
     deleteProduct () {
-      this.$store.dispatch('api/deleteArticle', {
-        category: 'lavka',
-        id: this.product.alias
-      })
+      this.$store.dispatch('api/deleteArticle', this.product)
       setTimeout(() => {
         this.$router.push('/lavka')
       })

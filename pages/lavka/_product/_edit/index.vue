@@ -37,9 +37,9 @@
         .col-6
           .file-input(v-if="!hasImage")
             fileInput(v-model="file")
-          .file-input.main-image(v-else)
-            img(:src="product.image" alt="Изображение")
+          .file-input.article-image(v-else)
             vButton(@click="deleteImage" text="Удалить изображение")
+            img(:src="product.image" alt="Изображение")
       h2.h2 Описание
       vEditor(v-model="editorData")
     .buttons.flex.j-end

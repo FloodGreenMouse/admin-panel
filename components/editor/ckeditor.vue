@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import config from './editor-config.js'
+import { toolbar } from './editor-config.js'
 
 export default {
   name: 'ckeditor-wysiwyg-component',
@@ -22,13 +22,14 @@ export default {
   },
   data () {
     return {
-      editor: null
+      editor: null,
+      toolbar
     }
   },
   methods: {
     init () {
       window.ClassicEditor.defaultConfig = {
-        toolbar: config.toolbar
+        toolbar
       }
       window.ClassicEditor
         .create(this.$refs.editor)

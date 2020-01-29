@@ -2,14 +2,23 @@
   .page.edit
     h1.page-title Новая статья
     .editor
-      .input-field
-        vInput(
-          v-model="inputTitle"
-          :invalid="!validTitle"
-          placeholder="Заголовок статьи"
-          @input="validTitle = true"
-          :maxLength="50"
-          required)
+      .flex
+        .col-6
+          h2.h2 Заголовок статьи
+          .flex
+            .col-4
+              .input-field
+                vInput(
+                  v-model="inputTitle"
+                  :invalid="!validTitle"
+                  placeholder="Заголовок статьи"
+                  @input="validTitle = true"
+                  :maxLength="50"
+                  required)
+        .col-6
+          .file-input
+            fileInput(v-model="file")
+      h2.h2 Контент
       vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
@@ -24,59 +33,31 @@
       template(v-slot:header)
         h2 Отменить редактирование?
       template(v-slot:footer)
-        vButton(text="Да" type="error" link="/history")
+        vButton(text="Да" type="error" link="/news")
         vButton(text="Нет" @click="showModal = false")
 </template>
 
 <script>
-import vButton from '~/components/form/button'
-import vEditor from '~/components/editor'
-import vModal from '~/components/modal'
-import vInput from '~/components/form/input'
+import mixinNewArticle from '@/mixins/new-article'
+import vButton from '@/components/form/button'
+import vEditor from '@/components/editor'
+import vModal from '@/components/modal'
+import vInput from '@/components/form/input'
+import fileInput from '@/components/form/file-input'
 
 export default {
   name: 'edit-page',
+  mixins: [mixinNewArticle],
   components: {
     vButton,
     vEditor,
     vInput,
-    vModal
+    vModal,
+    fileInput
   },
   data () {
     return {
-      inputTitle: '',
-      validTitle: true,
-      editorData: '',
-      showLoading: false,
-      showModal: false
-    }
-  },
-  methods: {
-    sendData () {
-      this.showLoading = true
-      this.article = {
-        category: 'history',
-        title: this.inputTitle,
-        content: this.editorData
-      }
-      if (this.article.title.length) {
-        this.$store.dispatch('api/addArticle', this.article).then(() => {
-          this.showLoading = false
-          this.$store.dispatch('addNotification', {
-            type: 'info',
-            title: 'Успешно',
-            message: 'Новая статья создана' })
-          setTimeout(() => {
-            this.$router.push(`/history/${this.article.alias}`)
-          }, 500)
-        }).catch(err => {
-          this.showLoading = false
-          console.log('Error', err)
-        })
-      } else {
-        this.showLoading = false
-        this.validTitle = false
-      }
+      category: 'history'
     }
   }
 }

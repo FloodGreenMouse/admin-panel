@@ -2,12 +2,26 @@
   .page.edit
     h1.page-title Редактирование статьи
     .editor
-      .input-field
-        vInput(
-          v-model="inputTitle"
-          :incomingData="article.title"
-          :maxLength="50"
-          placeholder="Заголовок статьи")
+      .flex
+        .col-6
+          h2.h2 Заголовок статьи
+          .flex
+            .col-4
+              .input-field
+                vInput(
+                  v-model="inputTitle"
+                  :incomingData="article.title"
+                  placeholder="Заголовок статьи"
+                  @input="validTitle = true"
+                  :maxLength="50"
+                  required)
+        .col-6
+          .file-input(v-if="!hasImage")
+            fileInput(v-model="file")
+          .file-input.article-image(v-else)
+            vButton(@click="deleteImage" text="Удалить изображение")
+            img(:src="article.image" alt="Изображение")
+      h2.h2 Контент
       vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
@@ -27,26 +41,26 @@
 </template>
 
 <script>
+import mixinEditArticle from '@/mixins/edit-article'
 import vButton from '~/components/form/button'
 import vEditor from '~/components/editor'
 import vModal from '~/components/modal'
 import vInput from '~/components/form/input'
+import fileInput from '@/components/form/file-input'
 
 export default {
   name: 'edit-page',
+  mixins: [mixinEditArticle],
   components: {
     vButton,
     vEditor,
     vInput,
-    vModal
+    vModal,
+    fileInput
   },
   data () {
     return {
-      inputTitle: '',
-      editorData: '',
-      incomingData: '',
-      showLoading: false,
-      showModal: false
+      category: 'history'
     }
   },
   asyncData ({ store, params }) {
@@ -63,32 +77,6 @@ export default {
       console.warn('Error', err)
       return {}
     })
-  },
-  methods: {
-    sendData () {
-      this.showLoading = true
-      this.article.title = this.inputTitle
-      this.article.content = this.editorData
-      this.$store.dispatch('api/updateArticle', this.article).then(res => {
-        if (res) {
-          this.showLoading = false
-          this.$store.dispatch('addNotification', {
-            type: 'info',
-            title: 'Успешно',
-            message: 'Статья обновлена' })
-          setTimeout(() => {
-            this.$router.push(`/history/${this.article.alias}`)
-          }, 500)
-        } else {
-          this.showLoading = false
-          this.$store.dispatch('addNotification', {
-            type: 'error',
-            title: 'Ошибка',
-            message: 'Возникла какая-то ошибка' })
-          console.log('Error')
-        }
-      })
-    }
   }
 }
 </script>

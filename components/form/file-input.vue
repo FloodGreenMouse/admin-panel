@@ -1,6 +1,6 @@
 <template lang="pug">
   .file-input-component
-    .flex.a-center
+    .flex.column.j-center
       input(
         type="file"
         name="Добавить изображение"
@@ -17,18 +17,24 @@
         @click="deleteImage")
       span.error(v-if="showError") Узображение больше 1мб!
     .file-info.flex.a-center(v-if="!showError")
-      img.preview-image(v-if="imagePreview.length" :src="imagePreview" alt="Изображение")
-      span {{ fileDataName }}
-      span {{ fileDataSize }}
+      .no-image(v-if="!imagePreview.length")
+        iconImage
+      .preview-image(v-else)
+        img(:src="imagePreview" alt="Изображение")
+        span {{ fileDataName }}
+        =" "
+        span {{ fileDataSize }}
 </template>
 
 <script>
 import vButton from '~/components/form/button'
+import iconImage from '~/components/icons/image'
 
 export default {
   name: 'file-input-component',
   components: {
-    vButton
+    vButton,
+    iconImage
   },
   data () {
     return {
@@ -78,17 +84,26 @@ export default {
 
 <style lang="scss" scoped>
   .file-input-component {
-    .preview-image {
-      max-width: 100px;
+    .file-info {
+      margin-top: 20px;
+      .preview-image {
+        max-width: 100px;
+        img {
+          width: 100%;
+        }
+      }
+      .no-image {
+        max-width: 100px;
+        svg {
+          width: 100%;
+        }
+      }
+      .error {
+        color: $color-error;
+      }
     }
     input {
       display: none;
-    }
-    span {
-      margin-left: 20px;
-    }
-    .error {
-      color: $color-error;
     }
   }
 </style>

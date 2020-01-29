@@ -112,7 +112,8 @@ export default {
         category: 'lavka',
         title: this.inputTitle,
         content: this.editorData,
-        prices: this.prices
+        prices: this.prices,
+        image: ''
       }
       if (this.file !== null) {
         this.product.file = this.file

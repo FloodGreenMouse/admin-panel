@@ -2,17 +2,26 @@
   .page.edit
     h1.page-title Редактирование статьи
     .editor
-      .input-field
-        vInput(
-          v-model="inputTitle"
-          :incomingData="article.title"
-          :maxLength="50"
-          placeholder="Заголовок статьи")
-      .file-input(v-if="!article.image")
-        fileInput(v-model="file")
-      .file-input.main-image(v-else)
-        img(:src="article.image" alt="Изображение")
-        vButton(@click="deleteImage" text="Удалить изображение")
+      .flex
+        .col-6
+          h2.h2 Заголовок статьи
+          .flex
+            .col-4
+              .input-field
+                vInput(
+                  v-model="inputTitle"
+                  :incomingData="article.title"
+                  placeholder="Заголовок статьи"
+                  @input="validTitle = true"
+                  :maxLength="50"
+                  required)
+        .col-6
+          .file-input(v-if="!hasImage")
+            fileInput(v-model="file")
+          .file-input.article-image(v-else)
+            vButton(@click="deleteImage" text="Удалить изображение")
+            img(:src="article.image" alt="Изображение")
+      h2.h2 Контент
       vEditor(v-model="editorData")
     .buttons.flex.j-end
       vButton(
@@ -32,6 +41,7 @@
 </template>
 
 <script>
+import mixinEditArticle from '@/mixins/edit-article'
 import vButton from '@/components/form/button'
 import vEditor from '@/components/editor'
 import vModal from '@/components/modal'
@@ -40,6 +50,7 @@ import fileInput from '@/components/form/file-input'
 
 export default {
   name: 'edit-page',
+  mixins: [mixinEditArticle],
   components: {
     vButton,
     vEditor,
@@ -49,11 +60,7 @@ export default {
   },
   data () {
     return {
-      file: null,
-      inputTitle: '',
-      editorData: '',
-      showLoading: false,
-      showModal: false
+      category: 'needs'
     }
   },
   asyncData ({ store }) {
@@ -71,38 +78,9 @@ export default {
       return {}
     })
   },
-  methods: {
-    sendData () {
-      this.showLoading = true
-      this.article.title = this.inputTitle
-      this.article.content = this.editorData
-      if (!this.article.image) {
-        this.article.file = this.file
-      }
-      this.article.unique = true
-      this.$store.dispatch('api/updateArticle', this.article).then(res => {
-        if (res) {
-          this.showLoading = false
-          this.$store.dispatch('addNotification', {
-            type: 'info',
-            title: 'Успешно',
-            message: 'Статья обновлена' })
-          setTimeout(() => {
-            this.$router.push('/needs')
-          }, 500)
-        } else {
-          this.showLoading = false
-          this.$store.dispatch('addNotification', {
-            type: 'error',
-            title: 'Ошибка',
-            message: 'Возникла какая-то ошибка' })
-          console.log('Error')
-        }
-      })
-    },
-    deleteImage () {
-      this.article.image = ''
-    }
+  mounted () {
+    this.article.unique = true
+    this.backPath = `/${this.category}`
   }
 }
 </script>

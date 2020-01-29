@@ -1,6 +1,8 @@
 <template lang="pug">
   .page.article
     h1.page-title {{ article.title }}
+    .main-image(v-if="article.image")
+      img(:src="article.image")
     .article-content(v-html="article.content")
     .buttons.flex.j-end
       vButton(text="Редактировать" @click="openEditor")
@@ -14,19 +16,20 @@
 </template>
 
 <script>
+import mixinPreviewArticle from '@/mixins/preview-article'
 import vButton from '~/components/form/button'
 import vModal from '~/components/modal'
 
 export default {
   name: 'article-page',
+  mixins: [mixinPreviewArticle],
   components: {
     vButton,
     vModal
   },
   data () {
     return {
-      article: {},
-      showModal: false
+      category: 'shrines'
     }
   },
   asyncData ({ store, params }) {
@@ -40,37 +43,6 @@ export default {
     }).catch(err => {
       console.warn('Error', err)
       return {}
-    })
-  },
-  methods: {
-    openEditor () {
-      this.$router.push(`/shrines/article/${this.article.alias}`)
-    },
-    deleteArticle () {
-      this.$store.dispatch('api/deleteArticle', {
-        category: 'shrines',
-        id: this.article.alias
-      })
-      setTimeout(() => {
-        this.$router.push('/shrines')
-      })
-    }
-  },
-  mounted () {
-    document.querySelectorAll('oembed[url]').forEach(element => {
-      const videoContainer = document.createElement('div')
-      const iframe = document.createElement('iframe')
-      let url = element.getAttribute('url').replace('youtu.be', 'youtube.com/embed/')
-      url = url.replace('watch?v=', '/embed/')
-      iframe.setAttribute('width', '100%')
-      iframe.setAttribute('height', '100%')
-      iframe.setAttribute('src', url)
-      iframe.setAttribute('frameborder', '0')
-      iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope')
-      videoContainer.appendChild(iframe)
-      videoContainer.className = 'video-content'
-
-      element.appendChild(videoContainer)
     })
   }
 }

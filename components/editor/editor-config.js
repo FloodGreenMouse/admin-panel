@@ -16,8 +16,8 @@ const config = {
     'highlight',
     '|',
     'horizontalLine',
-    'indent',
-    'outdent',
+    // 'indent',
+    // 'outdent',
     '|',
     'blockQuote',
     'insertTable',
@@ -30,5 +30,7 @@ const config = {
     'redo'
   ]
 }
+
+export const toolbar = config.toolbar
 
 export default config

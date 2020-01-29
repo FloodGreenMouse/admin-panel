@@ -4,16 +4,15 @@
     .wrapper(v-if="showMenu" @click="closeMenu")
   .menu-container(:class="{'show-menu': showMenu}")
     menuLink(link="/") Главная
-    menuLink(link="/news") Новости
-    menuLink(link="/shrines") Святыни
-    menuLink(link="/history") История монастыря
-    menuLink(link="/visitors") Посетителям
-    menuLink(link="/lavka") Церковная лавка
-    menuLink(link="/needs") Нужды обители
-    menuLink(link="/contacts") Контакты
+    menuLink(
+      v-if="section.active"
+      v-for="(section, i) in sections"
+      :key="i"
+      :link="section.link") {{ section.title }}
 </template>
 
 <script>
+import { sections } from '@/app.config.js'
 import { mapState } from 'vuex'
 import menuLink from './menu-link'
 
@@ -21,6 +20,11 @@ export default {
   name: 'menu-component',
   components: {
     menuLink
+  },
+  data () {
+    return {
+      sections
+    }
   },
   watch: {
     '$route' () {

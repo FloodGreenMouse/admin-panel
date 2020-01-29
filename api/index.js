@@ -111,7 +111,10 @@ const API = {
    * @param data <object>
    */
   deleteArticle (data) {
-    return firebase.database().ref().child(`/${data.category}/${data.category}${data.id}`).remove()
+    if (data.image.length) {
+      firebase.storage().ref().child(`/${data.category}/${data.alias}`).delete().then(() => {})
+    }
+    return firebase.database().ref().child(`/${data.category}/${data.category}${data.alias}`).remove()
   },
 
   /**

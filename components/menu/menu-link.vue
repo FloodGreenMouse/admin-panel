@@ -28,6 +28,7 @@ export default {
     .text {
       position: relative;
       z-index: 0;
+      user-select: none;
     }
     a {
       position: absolute;

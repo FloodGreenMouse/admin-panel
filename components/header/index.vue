@@ -5,19 +5,22 @@
       button(@click="toggleMenu")
         menuIcon.icon
       nuxt-link(to="/") Админ-панель
-    .menu
+    .menu.flex
+      vTransactions.transactions
       span.logout(@click="logout") Выход
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import firebase from '~/plugins/firebase'
-import menuIcon from '~/components/icons/menu'
 import cookie from 'vue-cookie'
+import vTransactions from '@/components/transactions'
+import menuIcon from '~/components/icons/menu'
 
 export default {
   name: 'header-component',
   components: {
+    vTransactions,
     menuIcon
   },
   computed: {
@@ -56,6 +59,9 @@ export default {
 
 <style lang="scss" scoped>
   .header-component {
+    .transactions {
+      margin-right: 20px;
+    }
     a {
       text-decoration: none;
     }

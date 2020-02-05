@@ -34,6 +34,11 @@ const config = {
     {
       title: '/contacts',
       link: 'Контакты'
+    },
+    {
+      title: 'Заказы в лавке',
+      link: '/transactions',
+      active: true
     }
   ]
 }

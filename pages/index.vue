@@ -2,10 +2,10 @@
   .page.index
     h1 Админ панель
     .flex
-      infoWindow.col-6(title="Хранилище файлов")
+      infoWindow(title="Хранилище файлов")
         a(href="https://console.firebase.google.com/u/0/project/admin-test-7f71a/storage/admin-test-7f71a.appspot.com/files" target="_blank") Открыть хранилище
     .flex
-      infoWindow.col-6(title="Консоль Firebase")
+      infoWindow(title="Консоль Firebase")
         a(href="https://console.firebase.google.com/u/0/project/admin-test-7f71a/database/admin-test-7f71a/data" target="_blank") Открыть консоль
 </template>
 

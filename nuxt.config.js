@@ -32,7 +32,7 @@ export default {
   styleResources: {
     scss: [
       '@/assets/scss/variables/_index.scss',
-      '@/assets/scss/mixins.scss'
+      '@/assets/scss/_mixins.scss'
     ]
   },
   /*
@@ -45,6 +45,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '@/directives/outside'
   ],
   /*
   ** Nuxt.js modules

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .info-window-component
+  .info-window-component.col-md-8.col-6
     .header
       span {{ title }}
     .body

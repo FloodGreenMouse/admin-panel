@@ -6,9 +6,20 @@ export const modules = {
 
 export const state = () => ({
   notifications: [],
+  unreadTransactions: {},
   token: null,
   showMenu: false
 })
+
+export const getters = {
+  unreadTransactionsCount: state => {
+    if (state.unreadTransactions) {
+      const count = Object.keys(state.unreadTransactions)
+      return count.length
+    }
+    return false
+  }
+}
 
 export const actions = {
   showMenu ({ commit }, value) {
@@ -36,6 +47,14 @@ export const actions = {
   deleteNotification ({ commit }, notification) {
     clearTimeout(notification.timeout)
     commit('DELETE_NOTIFICATION')
+  },
+
+  setUnreadTransactions ({ commit }, transactions) {
+    commit('SET_UNREAD_TRANSACTIONS', transactions)
+  },
+
+  deleteUnreadTransaction ({ commit }, id) {
+    commit('DELETE_UNREAD_TRANSACTION', id)
   }
 }
 
@@ -57,11 +76,15 @@ export const mutations = {
 
   DELETE_USER_UID (state) {
     state.token = null
-  }
-}
+  },
 
-export const getters = {
-  //
+  SET_UNREAD_TRANSACTIONS (state, transactions) {
+    state.unreadTransactions = transactions
+  },
+
+  DELETE_UNREAD_TRANSACTION (state, id) {
+    state.unreadTransactions = delete state.unreadTransactions[id]
+  }
 }
 
 export default {

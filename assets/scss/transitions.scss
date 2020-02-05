@@ -38,3 +38,12 @@
 .page-leave-active {
   opacity: 0;
 }
+
+.transactions-enter, .transactions-leave-to {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.transactions-enter-active, .transactions-leave-active {
+  transition: opacity .2s ease, transform 0.3s ease;
+}

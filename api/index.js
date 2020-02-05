@@ -3,15 +3,16 @@ import firebase from '~/plugins/firebase'
 const API = {
 
   /**
-   * Get categories
+   * Get articles
    * @method GET
+   * @param category <object>
    */
   getArticles (category) {
     return firebase.database().ref(`/${category}`).once('value')
   },
 
   /**
-   * Get categories
+   * Get article
    * @method GET
    * @param data <object>
    */
@@ -20,8 +21,8 @@ const API = {
   },
 
   /**
-   * Get categories
-   * @method GET
+   * Add categories
+   * @method POST
    * @param data <object>
    */
   addArticle (data) {
@@ -65,8 +66,8 @@ const API = {
   },
 
   /**
-   * Get categories
-   * @method GET
+   * Update article
+   * @method POST
    * @param data <object>
    */
   updateArticle (data) {
@@ -107,7 +108,7 @@ const API = {
 
   /**
    * Delete article
-   * @method GET
+   * @method POST
    * @param data <object>
    */
   deleteArticle (data) {
@@ -119,7 +120,7 @@ const API = {
 
   /**
    * Delete image
-   * @method GET
+   * @method POST
    * @param data <object>
    */
   deleteImage (data) {
@@ -139,6 +140,43 @@ const API = {
     } else {
       return null
     }
+  },
+
+  /**
+   * Get transactions
+   * @method GET
+   * @param data <object>
+   */
+  getTransactions (data) {
+    if (!('limit' in data)) {
+      data.limit = 25
+    }
+    if (('read' in data)) {
+      return firebase.database().ref('/transactions').limitToFirst(data.limit).orderByChild('read').equalTo(data.read).once('value')
+    }
+    return firebase.database().ref('/transactions').limitToFirst(data.limit).once('value')
+  },
+
+  /**
+   * Get transactions
+   * @method GET
+   * @param id <number>
+   */
+  getTransaction (id) {
+    return firebase.database().ref(`/transactions/${id}`).once('value')
+  },
+
+  /**
+   * Get categories
+   * @method POST
+   * @param data <object>
+   */
+  updateTransaction (data) {
+    return firebase.database().ref().child(`/transactions/${data.id}`).update(data).then(() => {
+      return true
+    }).catch(() => {
+      return false
+    })
   }
 }
 

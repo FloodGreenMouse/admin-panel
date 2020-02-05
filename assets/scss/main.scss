@@ -1,9 +1,9 @@
 // components
+@import "variables/index";
 @import "mixins";
-@import 'utils';
 @import "transitions";
-@import 'variables/index';
 @import 'editor';
+@import "utils";
 
 @include font-face ('Roboto', '../fonts/Roboto-Thin', $weight: 100, $style: normal)
 @include font-face ('Roboto', '../fonts/Roboto-Light', $weight: 200, $style: normal)

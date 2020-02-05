@@ -25,6 +25,15 @@ export const actions = {
   },
   deleteImage ({ dispatch }, data) {
     return api.deleteImage(data)
+  },
+  getTransactions ({ dispatch }, data = {}) {
+    return api.getTransactions(data)
+  },
+  getTransaction ({ dispatch }, id) {
+    return api.getTransaction(id)
+  },
+  updateTransaction ({ dispatch }, data) {
+    return api.updateTransaction(data)
   }
 }
 

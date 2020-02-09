@@ -1,8 +1,14 @@
 <template lang="pug">
   .page.transactions
     h1.title Заказы в лавке
-    .items
-      transactionItem(v-for="(item, i) in transactions" :key="i" :transaction="item")
+    .items(v-if="hasItems")
+      transactionItem(
+        v-for="(item, i) in transactions"
+        :key="i"
+        :transaction="item"
+        @delete="deleteTransaction")
+    .no-transactons.flex.center(v-else)
+      h2.title Нет заказов
 </template>
 
 <script>
@@ -18,6 +24,15 @@ export default {
       transactions: {}
     }
   },
+  computed: {
+    hasItems () {
+      if (!this.transactions) {
+        return false
+      }
+      const count = Object.keys(this.transactions)
+      return !!count.length
+    }
+  },
   asyncData ({ store }) {
     return store.dispatch('api/getTransactions').then(res => {
       return {
@@ -27,6 +42,11 @@ export default {
       console.warn('Error', err)
       return {}
     })
+  },
+  methods: {
+    deleteTransaction (id) {
+      this.$delete(this.transactions, id)
+    }
   }
 }
 </script>

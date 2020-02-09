@@ -1,8 +1,7 @@
 <template lang="pug">
   .page.product
     h1.page-title {{ product.title }}
-    .main-image(v-if="hasImage")
-      img(:src="product.image" alt="Товар")
+    contentImage(:src="product.image")
     .prices
       h2.h2 Стоимость товара
       .price(v-for="(item, i) in product.prices" :key="i")
@@ -29,12 +28,14 @@
 <script>
 import vButton from '~/components/form/button'
 import vModal from '~/components/modal'
+import contentImage from '@/components/content-image'
 
 export default {
   name: 'product-page',
   components: {
     vButton,
-    vModal
+    vModal,
+    contentImage
   },
   data () {
     return {

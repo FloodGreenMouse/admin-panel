@@ -34,6 +34,9 @@ export const actions = {
   },
   updateTransaction ({ dispatch }, data) {
     return api.updateTransaction(data)
+  },
+  deleteTransaction ({ dispatch }, id) {
+    return api.deleteTransaction(id)
   }
 }
 

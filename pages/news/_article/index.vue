@@ -1,8 +1,7 @@
 <template lang="pug">
   .page.article
     h1.page-title {{ article.title }}
-    .main-image(v-if="article.image")
-      img(:src="article.image")
+    contentImage(:src="article.image")
     .article-content(v-html="article.content")
     .buttons.flex.j-end
       vButton(text="Редактировать" @click="openEditor")
@@ -19,13 +18,15 @@
 import mixinPreviewArticle from '@/mixins/preview-article'
 import vButton from '~/components/form/button'
 import vModal from '~/components/modal'
+import contentImage from '@/components/content-image'
 
 export default {
   name: 'article-page',
   mixins: [mixinPreviewArticle],
   components: {
     vButton,
-    vModal
+    vModal,
+    contentImage
   },
   data () {
     return {

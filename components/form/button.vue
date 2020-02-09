@@ -4,6 +4,7 @@
     v-if="link.length"
     :to="link"
     :title="title")
+    slot
   button(
     @click="$emit('click')"
     :class="[classList, {'loading' : loading }]"
@@ -11,6 +12,7 @@
     :type="role"
     :title="title")
     span.text(:class="{'hide-text': loading}") {{ text }}
+    slot
     .button-loader(v-if="loading")
 </template>
 
@@ -66,6 +68,10 @@ export default {
 <style lang="scss" scoped>
   .button-component {
     position: relative;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
     a:hover ~button {
       box-shadow: $shadow-button-hovered;
     }

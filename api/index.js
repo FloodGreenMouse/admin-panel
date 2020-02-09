@@ -167,12 +167,25 @@ const API = {
   },
 
   /**
-   * Get categories
+   * Update transaction
    * @method POST
    * @param data <object>
    */
   updateTransaction (data) {
     return firebase.database().ref().child(`/transactions/${data.id}`).update(data).then(() => {
+      return true
+    }).catch(() => {
+      return false
+    })
+  },
+
+  /**
+   * Delete transaction
+   * @method POST
+   * @param id <number>
+   */
+  deleteTransaction (id) {
+    return firebase.database().ref().child(`/transactions/${id}`).remove().then(() => {
       return true
     }).catch(() => {
       return false

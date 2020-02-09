@@ -2,13 +2,21 @@
   .page.transaction
     h1.title Заказ в лавке
     .flex.center
-    .item.flex.column.col-md-8.col-6
-      span.name Имя: {{ transaction.name || "Не указано" }}
-      span.status Статус:
-        =" "
-        span(:class="getPaidClassList") {{ getPaid }}
-      span.amount Сумма: {{ transaction.amount }} руб.
-      span.read Прочитано: {{ getReadStatus }}
+    .items.flex.column.col-md-8.col-6
+      .item
+        span.name Имя: {{ transaction.name || "Не указано" }}
+      .item
+        span.email Почта: {{ transaction.email || "Не указано" }}
+      .item
+        span.email Комментарий: {{ transaction.comment || "Не указано" }}
+      .item
+        span.status Статус:
+          =" "
+          span(:class="getPaidClassList") {{ getPaid }}
+      .item
+        span.amount Сумма: {{ transaction.amount }} руб.
+      .item
+        span.read Прочитано: {{ getReadStatus }}
     .buttons.flex.j-end
       transition(name="fade")
         vButton(
@@ -88,6 +96,17 @@ export default {
 
 <style lang="scss" scoped>
   .page.transaction {
+    .items {
+      .item {
+        padding: 10px 10px;
+        &:nth-child(odd) {
+          background-color: lighten($color-primary, 50%);
+        }
+        &:nth-child(even) {
+          background-color: lighten($color-primary, 55%);
+        }
+      }
+    }
     .paid {
       color: $color-success;
     }

@@ -2,8 +2,8 @@
   .page.edit
     h1.page-title Редактирование товара
     .editor
-      .flex
-        .col-6
+      .flex.wrap
+        .col-md-8.col-6
           h2.h2 Название товара
           .input-field.col-4
             vInput(
@@ -34,7 +34,7 @@
               v-if="i === product.prices.length - 1"
               @click.prevent="addPrice"
               href="") Добавить
-        .col-6
+        .col-md-8.col-6
           .file-input(v-if="!hasImage")
             fileInput(v-model="file")
           .file-input.article-image(v-else)

@@ -2,8 +2,8 @@
   .page.edit
     h1.page-title Редактирование статьи
     .editor
-      .flex
-        .col-6
+      .flex.wrap
+        .col-md-8.col-6
           h2.h2 Заголовок статьи
           .flex
             .col-4
@@ -15,7 +15,7 @@
                   @input="validTitle = true"
                   :maxLength="50"
                   required)
-        .col-6
+        .col-md-8.col-6
           .file-input(v-if="!hasImage")
             fileInput(v-model="file")
           .file-input.article-image(v-else)

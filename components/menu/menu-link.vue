@@ -1,13 +1,32 @@
 <template lang="pug">
-  .menu-link-component
+  .menu-link-component.flex.j-between.a-center(@click="isLoading = true")
     .text
       slot
+    transition(name="fade")
+      vPreloader.preloader(v-if="isLoading")
     nuxt-link(:to="link" @click="$emit('click')")
 </template>
 
 <script>
+import vPreloader from '@/components/loader/preloader'
+
 export default {
   name: 'menu-link-component',
+  data () {
+    return {
+      isLoading: false
+    }
+  },
+  watch: {
+    '$route' () {
+      setTimeout(() => {
+        this.isLoading = false
+      }, 200)
+    }
+  },
+  components: {
+    vPreloader
+  },
   props: {
     link: {
       type: String,
@@ -25,6 +44,10 @@ export default {
     transition: $trs3;
     font-weight: $font-weight-medium;
     color: lighten($color-text-dark, 10%);
+    .preloader {
+      transform-origin: right;
+      transform: scale(0.5);
+    }
     .text {
       position: relative;
       z-index: 0;

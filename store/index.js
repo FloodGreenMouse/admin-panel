@@ -1,4 +1,5 @@
 import api from './api'
+import Vue from 'vue'
 
 export const modules = {
   api
@@ -83,7 +84,7 @@ export const mutations = {
   },
 
   DELETE_UNREAD_TRANSACTION (state, id) {
-    state.unreadTransactions = delete state.unreadTransactions[id]
+    Vue.delete(state.unreadTransactions, id)
   }
 }
 

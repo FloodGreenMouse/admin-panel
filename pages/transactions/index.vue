@@ -1,6 +1,19 @@
 <template lang="pug">
   .page.transactions
     h1.title Заказы в лавке
+    .info-bar.flex.a-center.j-between(v-if="hasItems")
+      span.status 1
+      .col-2
+        span Имя
+      .col-2
+        span Почта
+      .col-2
+        span Телефон
+      .col-2
+        span Статус
+      .col-2
+        span Сумма
+    hr
     .items(v-if="hasItems")
       transactionItem(
         v-for="(item, i) in transactions"
@@ -45,6 +58,7 @@ export default {
   },
   methods: {
     deleteTransaction (id) {
+      this.$store.dispatch('deleteUnreadTransaction', id)
       this.$delete(this.transactions, id)
     }
   }
@@ -53,8 +67,21 @@ export default {
 
 <style lang="scss" scoped>
   .page.transactions {
-    .items {
+    .info-bar {
+      text-align: center;
+      padding-right: 100px;
       padding-top: 40px;
+      span {
+        user-select: none;
+        font-weight: $font-weight-medium;
+      }
+      .status {
+        display: inline-block;
+        width: 20px;
+      }
+    }
+    .items {
+      padding-top: 20px;
       padding-bottom: 40px;
     }
   }

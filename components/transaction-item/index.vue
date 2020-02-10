@@ -1,23 +1,29 @@
 <template lang="pug">
-  .transaction-item-component.flex.a-center.j-between
-    .transaction.flex.j-between
-      .flex.a-center
-        .read-status(:class="asReadClassList")
-          iconNote
+  .transaction-item-component
+    .flex.a-center.j-between
+      .read-status.col-2(:class="asReadClassList")
+        iconNote
+      .col-2
         span.name {{ transaction.name }}
-      .information.flex.a-center
-        span.status Статус:
+      .col-2
+        span.email {{ transaction.email }}
+      .col-2
+        span.phone {{ transaction.phone }}
+      .col-2
+        span.pay-status Статус:
           span(:class="statusClassList") {{ getStatus }}
-        span.amount {{ transaction.amount }} руб.
-      nuxt-link.link(:to="`/transactions/${transaction.id}`")
-    .delete-button
-      vButton(
-        @click="deleteTransaction"
-        type="error"
-        text=" "
-        :loading="showLoading"
-        title="Удалить")
-        iconTrash
+      .col-2
+        span.pay-status Сумма: {{ transaction.amount }}
+      .flex.j-end
+        .delete-button
+          vButton(
+            @click="deleteTransaction(transaction.id)"
+            type="error"
+            text=" "
+            :loading="showLoading"
+            title="Удалить")
+            iconTrash
+    nuxt-link.link(:to="`/transactions/${transaction.id}`")
 </template>
 
 <script>
@@ -55,16 +61,16 @@ export default {
     }
   },
   methods: {
-    deleteTransaction () {
+    deleteTransaction (id) {
       this.showLoading = true
-      this.$store.dispatch('api/deleteTransaction', this.transaction.id)
+      this.$store.dispatch('api/deleteTransaction', id)
         .then(() => {
           this.showLoading = false
+          this.$emit('delete', id)
           this.$store.dispatch('addNotification', {
             type: 'info',
             title: 'Успешно',
             message: 'Транзакция удалена' })
-          this.$emit('delete', this.transaction.id)
         }).catch(() => {
           this.showLoading = false
           this.$store.dispatch('addNotification', {
@@ -86,11 +92,11 @@ export default {
         padding: 10px 15px;
       }
     }
-    .transaction {
-      .read {
+    .read-status {
+      &.read {
         @include svg(rgba($color-text-dark, 0.3));
       }
-      .unread {
+      &.unread {
         @include svg(rgba($color-text-dark, 0.9));
       }
     }
@@ -99,8 +105,11 @@ export default {
 
 <style lang="scss" scoped>
   .transaction-item-component {
+    position: relative;
     border-top: 1px solid rgba($color-text-dark, 0.1);
     transition: $trs3;
+    text-align: center;
+    z-index: 1;
     &:last-child {
       border-bottom: 1px solid rgba($color-text-dark, 0.1);
     }
@@ -110,36 +119,32 @@ export default {
         text-decoration: underline;
       }
     }
-    .transaction {
-      flex: 1;
-      position: relative;
-      z-index: 1;
-      padding: 20px 25px;
-      .read-status {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-right: 20px;
-        svg {
-          width: 100%;
-        }
+    .read-status {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      text-align: left;
+      svg {
+        width: 100%;
       }
     }
-    .information {
+    .pay-status {
+      width: 300px;
+      text-align: left;
       span {
         display: inline-block;
         margin-left: 20px;
-        .paid {
-          color: $color-success;
-        }
-        .unpaid {
-          color: $color-error;
-        }
       }
-      .status {
-        width: 300px;
-        text-align: left;
+      .paid {
+        color: $color-success;
       }
+      .unpaid {
+        color: $color-error;
+      }
+    }
+    .delete-button {
+      position: relative;
+      z-index: 2;
     }
     .link {
       position: absolute;

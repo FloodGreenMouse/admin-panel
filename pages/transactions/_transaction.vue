@@ -71,9 +71,9 @@ export default {
       this.transaction.read = true
       this.$store.dispatch('api/updateTransaction', this.transaction)
         .then(() => {
+          this.$store.dispatch('deleteUnreadTransaction', this.transaction.id)
           this.showLoading = false
           this.showMarkAsRead = false
-          this.$store.dispatch('deleteUnreadTransaction', this.transaction.id)
           this.$store.dispatch('addNotification', {
             type: 'info',
             title: 'Успешно',

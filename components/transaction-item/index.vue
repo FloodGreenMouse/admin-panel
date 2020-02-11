@@ -2,7 +2,7 @@
   .transaction-item-component
     .flex.a-center.j-between
       .read-status.col-2(:class="asReadClassList")
-        iconNote
+        iconEye
       .col-2
         span.name {{ transaction.name }}
       .col-2
@@ -27,14 +27,14 @@
 </template>
 
 <script>
-import iconNote from '@/components/icons/note'
+import iconEye from '@/components/icons/eye'
 import iconTrash from '@/components/icons/trash'
 import vButton from '@/components/form/button'
 
 export default {
   name: 'transaction-item-component',
   components: {
-    iconNote,
+    iconEye,
     iconTrash,
     vButton
   },
@@ -124,6 +124,7 @@ export default {
       width: 20px;
       height: 20px;
       text-align: left;
+      margin-left: 10px;
       svg {
         width: 100%;
       }

@@ -1,19 +1,21 @@
 <template lang="pug">
   .page.transactions
     h1.title Заказы в лавке
-    .info-bar.flex.a-center.j-between(v-if="hasItems")
-      span.status 1
-      .col-2
-        span Имя
-      .col-2
-        span Почта
-      .col-2
-        span Телефон
-      .col-2
-        span Статус
-      .col-2
-        span Сумма
-    hr
+    .info-bar(v-if="hasItems")
+      .flex.a-center.j-between
+        span.status
+          iconEye
+        .col-2
+          span Имя
+        .col-2
+          span Почта
+        .col-2
+          span Телефон
+        .col-2
+          span Статус
+        .col-2
+          span Сумма
+      hr
     .items(v-if="hasItems")
       transactionItem(
         v-for="(item, i) in transactions"
@@ -26,11 +28,30 @@
 
 <script>
 import transactionItem from '@/components/transaction-item'
+import iconEye from '@/components/icons/eye'
+
+const getOrderedTransactions = transactions => {
+  const ordered = []
+  for (const item in transactions) {
+    ordered.push(transactions[item])
+  }
+  ordered.sort((a, b) => {
+    if (new Date(a.date).getTime() < new Date(b.date).getTime()) {
+      return 1
+    }
+    if (new Date(a.date).getTime() > new Date(b.date).getTime()) {
+      return -1
+    }
+    return 0
+  })
+  return ordered
+}
 
 export default {
   name: 'transactions-page',
   components: {
-    transactionItem
+    transactionItem,
+    iconEye
   },
   data () {
     return {
@@ -48,8 +69,9 @@ export default {
   },
   asyncData ({ store }) {
     return store.dispatch('api/getTransactions').then(res => {
+      const transactions = res.val()
       return {
-        transactions: res.val()
+        transactions: getOrderedTransactions(transactions)
       }
     }).catch(err => {
       console.warn('Error', err)
@@ -59,7 +81,11 @@ export default {
   methods: {
     deleteTransaction (id) {
       this.$store.dispatch('deleteUnreadTransaction', id)
-      this.$delete(this.transactions, id)
+      this.transactions.forEach((item, i) => {
+        if (item.id === id) {
+          this.transactions.splice(i, 1)
+        }
+      })
     }
   }
 }
@@ -78,6 +104,7 @@ export default {
       .status {
         display: inline-block;
         width: 20px;
+        margin-left: 10px;
       }
     }
     .items {

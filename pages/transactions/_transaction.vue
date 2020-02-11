@@ -4,6 +4,8 @@
     .flex.center
     .items.flex.column.col-md-8.col-6
       .item
+        span.date Дата: {{ getDate }}
+      .item
         span.name Имя: {{ transaction.name || "Не указано" }}
       .item
         span.email Почта: {{ transaction.email || "Не указано" }}
@@ -46,6 +48,10 @@ export default {
     }
   },
   computed: {
+    getDate () {
+      const date = new Date(this.transaction.date)
+      return `${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}`
+    },
     getPaid () {
       return this.transaction.paid ? 'оплачено' : 'не оплачено'
     },

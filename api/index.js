@@ -154,7 +154,7 @@ const API = {
     if (('read' in data)) {
       return firebase.database().ref('/transactions').limitToFirst(data.limit).orderByChild('read').equalTo(data.read).once('value')
     }
-    return firebase.database().ref('/transactions').limitToFirst(data.limit).once('value')
+    return firebase.database().ref('/transactions').limitToFirst(data.limit).orderByChild('date').once('value')
   },
 
   /**

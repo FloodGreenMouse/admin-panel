@@ -12,6 +12,17 @@
       .item
         span.email Комментарий: {{ transaction.comment || "Не указано" }}
       .item
+        span.email Заказ:
+        .purchase-items
+          .purchase-item.flex.a-center(v-for="item in transaction.items")
+            .img.flex.center
+              img(v-if="item.image.length" :src="item.image")
+              iconImage(v-else)
+            span.title {{ item.title }}
+            span {{ item.description }}:
+            span {{ item.quantity }} шт.
+            span.amount Cумма: {{ item.price * item.quantity }} руб.
+      .item
         span.status Статус:
           =" "
           span(:class="getPaidClassList") {{ getPaid }}
@@ -34,11 +45,13 @@
 
 <script>
 import vButton from '@/components/form/button'
+import iconImage from '@/components/icons/image'
 
 export default {
   name: 'transaction-page',
   components: {
-    vButton
+    vButton,
+    iconImage
   },
   data () {
     return {
@@ -102,6 +115,36 @@ export default {
 
 <style lang="scss" scoped>
   .page.transaction {
+    .purchase-items {
+      .purchase-item {
+        margin-top: 20px;
+        &:last-child {
+          margin-bottom: 20px;
+        }
+        .img {
+          max-width: 50px;
+          width: 100%;
+          height: 50px;
+          margin-right: 20px;
+          border: 1px solid rgba($color-text-dark, 0.1);
+          padding: 5px;
+          svg {
+            width: 100%;
+          }
+          img {
+            width: 100%;
+          }
+        }
+        span {
+          display: inline-block;
+          margin-right: 5px;
+          font-size: 18px;
+        }
+        .title, .amount {
+          font-weight: $font-weight-bold;
+        }
+      }
+    }
     .items {
       .item {
         padding: 10px 10px;
